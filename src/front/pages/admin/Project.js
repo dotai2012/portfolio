@@ -5,7 +5,10 @@ import {
 } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 
-import { fetchProject } from '../../actions';
+import { Link } from 'react-router-dom';
+import Button from '../../components/CustomButtons/Button';
+
+import { fetchProjects, deleteProject } from '../../actions';
 
 const styles = theme => ({
   root: {
@@ -18,40 +21,61 @@ const styles = theme => ({
   },
 });
 
+const mapStateToProps = ({ projects }) => ({
+  projects,
+});
+
 @withStyles(styles)
-@connect(null, { fetchProject })
+@connect(mapStateToProps, { fetchProjects, deleteProject })
 class Project extends Component {
   componentDidMount() {
-    this.props.fetchProject();
+    this.props.fetchProjects();
   }
+
+  onDeleteProject = id => () => {
+    this.props.deleteProject(id);
+  }
+
+  renderProjects = () => this.props.projects.map(({ title, _id }, index) => (
+        <TableRow key={index}>
+              <TableCell component="th" scope="row">
+                {title}
+              </TableCell>
+              <TableCell align="right">
+                <Button simple component={Link} to={`/project/${_id}`} color="facebook">
+                  View
+                </Button>
+                <Button simple component={Link} to={`/admin/project/${_id}`} color="facebook">
+                  Edit
+                </Button>
+                <Button simple color="facebook" onClick={this.onDeleteProject(_id)}>
+                  Delete
+                </Button>
+              </TableCell>
+        </TableRow>
+  ))
 
   render() {
     const { classes } = this.props;
     return (
-      <Paper className={classes.root}>
-        <Table className={classes.table}>
-          <TableHead>
-            <TableRow>
-              <TableCell>Dessert (100g serving)</TableCell>
-              <TableCell align="right">Calories</TableCell>
-              <TableCell align="right">Fat (g)</TableCell>
-              <TableCell align="right">Carbs (g)</TableCell>
-              <TableCell align="right">Protein (g)</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            <TableRow>
-              <TableCell component="th" scope="row">
-                1
-              </TableCell>
-              <TableCell align="right">1</TableCell>
-              <TableCell align="right">1</TableCell>
-              <TableCell align="right">1</TableCell>
-              <TableCell align="right">1</TableCell>
-            </TableRow>
-          </TableBody>
-        </Table>
-    </Paper>
+      <React.Fragment>
+        <Button component={Link} to='/admin/new' color="facebook" size="lg" onClick={this.onLogin}>
+            New Project
+        </Button>
+        <Paper className={classes.root}>
+          <Table className={classes.table}>
+            <TableHead>
+              <TableRow>
+                <TableCell>Project Name</TableCell>
+                <TableCell align="right">Action</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {this.renderProjects()}
+            </TableBody>
+          </Table>
+        </Paper>
+      </React.Fragment>
     );
   }
 }

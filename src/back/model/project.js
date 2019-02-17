@@ -1,11 +1,22 @@
 import mongoose from 'mongoose';
+import slug from 'mongoose-slug-updater';
+
+mongoose.plugin(slug);
 
 const projectSchema = mongoose.Schema({
-  name: {
+  title: {
+    type: String,
+    required: true,
+  },
+  thumbnail: {
     type: String,
     required: true,
   },
   live: {
+    type: String,
+    required: true,
+  },
+  source: {
     type: String,
     required: true,
   },
@@ -32,6 +43,10 @@ const projectSchema = mongoose.Schema({
   body: {
     type: String,
     required: true,
+  },
+  slug: {
+    type: String,
+    slug: 'title',
   },
   user: {
     type: mongoose.Schema.Types.ObjectId,

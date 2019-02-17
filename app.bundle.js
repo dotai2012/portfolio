@@ -241,7 +241,7 @@ var getUser = function getUser(req, res) {
 };
 
 var listProject = function listProject(req, res) {
-  var query = _model_project__WEBPACK_IMPORTED_MODULE_3__["default"].find({}).limit(10);
+  var query = _model_project__WEBPACK_IMPORTED_MODULE_3__["default"].find({});
   query.exec(function (err, result) {
     Object(_service_query__WEBPACK_IMPORTED_MODULE_2__["default"])(err, result, res);
   });
@@ -249,12 +249,17 @@ var listProject = function listProject(req, res) {
 
 var addProject = function addProject(req, res) {
   var _req$body = req.body,
-      name = _req$body.name,
+      title = _req$body.title,
       live = _req$body.live,
+      source = _req$body.source,
       usedTool = _req$body.usedTool,
       usedSkill = _req$body.usedSkill,
       introduction = _req$body.introduction,
       body = _req$body.body;
+
+  var thumbnailFilter = lodash__WEBPACK_IMPORTED_MODULE_1___default.a.filter(req.files, function (o) {
+    return o.fieldname === 'thumbnail';
+  });
 
   var wireframeFilter = lodash__WEBPACK_IMPORTED_MODULE_1___default.a.filter(req.files, function (o) {
     return o.fieldname === 'wireframe';
@@ -264,18 +269,24 @@ var addProject = function addProject(req, res) {
     return o.fieldname === 'sitemap';
   });
 
-  var wireframe = wireframeFilter.map(function (_ref) {
+  var thumbnail = thumbnailFilter.map(function (_ref) {
     var filename = _ref.filename;
     return filename;
   });
-  var sitemap = sitemapFilter.map(function (_ref2) {
+  var wireframe = wireframeFilter.map(function (_ref2) {
     var filename = _ref2.filename;
+    return filename;
+  });
+  var sitemap = sitemapFilter.map(function (_ref3) {
+    var filename = _ref3.filename;
     return filename;
   });
   var profile = jwt_decode__WEBPACK_IMPORTED_MODULE_0___default()(req.get('Authorization'));
   var newProject = new _model_project__WEBPACK_IMPORTED_MODULE_3__["default"]({
-    name: name,
+    title: title,
+    thumbnail: thumbnail,
     live: live,
+    source: source,
     usedTool: usedTool,
     usedSkill: usedSkill,
     wireframe: wireframe,
@@ -451,13 +462,25 @@ var deleteUser = function deleteUser(req, res) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var mongoose__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! mongoose */ "mongoose");
 /* harmony import */ var mongoose__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(mongoose__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var mongoose_slug_updater__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! mongoose-slug-updater */ "mongoose-slug-updater");
+/* harmony import */ var mongoose_slug_updater__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(mongoose_slug_updater__WEBPACK_IMPORTED_MODULE_1__);
 
+
+mongoose__WEBPACK_IMPORTED_MODULE_0___default.a.plugin(mongoose_slug_updater__WEBPACK_IMPORTED_MODULE_1___default.a);
 var projectSchema = mongoose__WEBPACK_IMPORTED_MODULE_0___default.a.Schema({
-  name: {
+  title: {
+    type: String,
+    required: true
+  },
+  thumbnail: {
     type: String,
     required: true
   },
   live: {
+    type: String,
+    required: true
+  },
+  source: {
     type: String,
     required: true
   },
@@ -484,6 +507,10 @@ var projectSchema = mongoose__WEBPACK_IMPORTED_MODULE_0___default.a.Schema({
   body: {
     type: String,
     required: true
+  },
+  slug: {
+    type: String,
+    slug: 'title'
   },
   user: {
     type: mongoose__WEBPACK_IMPORTED_MODULE_0___default.a.Schema.Types.ObjectId,
@@ -855,6 +882,17 @@ module.exports = require("lodash");
 /***/ (function(module, exports) {
 
 module.exports = require("mongoose");
+
+/***/ }),
+
+/***/ "mongoose-slug-updater":
+/*!****************************************!*\
+  !*** external "mongoose-slug-updater" ***!
+  \****************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("mongoose-slug-updater");
 
 /***/ }),
 

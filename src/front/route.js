@@ -1,5 +1,6 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
+import { Redirect } from 'react-router';
 import Auth from './pages/Auth';
 import Home from './pages/Home';
 import ProtectedRoute from './services/protectedRoute';
@@ -13,6 +14,8 @@ export default function RouteApp() {
           <Route path="/login" component={Auth} />
           <ProtectedRoute path="/admin" exact component={Project} />
           <ProtectedRoute path="/admin/new" component={ProjectNewEdit} />
+          <ProtectedRoute path="/admin/project/:id" component={ProjectNewEdit} />
+          <Redirect to="/" />
     </Switch>
   );
 }

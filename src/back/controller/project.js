@@ -15,7 +15,7 @@ const getUser = (req, res) => {
 };
 
 const listProject = (req, res) => {
-  const query = Project.find({}).limit(10);
+  const query = Project.find({});
   query.exec((err, result) => {
     returnQuery(err, result, res);
   });
@@ -23,18 +23,23 @@ const listProject = (req, res) => {
 
 const addProject = (req, res) => {
   const {
-    name, live, usedTool, usedSkill, introduction, body,
+    title, live, source, usedTool, usedSkill, introduction, body,
   } = req.body;
 
+  const thumbnailFilter = _.filter(req.files, o => o.fieldname === 'thumbnail');
   const wireframeFilter = _.filter(req.files, o => o.fieldname === 'wireframe');
   const sitemapFilter = _.filter(req.files, o => o.fieldname === 'sitemap');
+
+  const thumbnail = thumbnailFilter.map(({ filename }) => filename);
   const wireframe = wireframeFilter.map(({ filename }) => filename);
   const sitemap = sitemapFilter.map(({ filename }) => filename);
 
   const profile = jwtDecode(req.get('Authorization'));
   const newProject = new Project({
-    name,
+    title,
+    thumbnail,
     live,
+    source,
     usedTool,
     usedSkill,
     wireframe,

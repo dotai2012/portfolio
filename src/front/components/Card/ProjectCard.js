@@ -17,7 +17,7 @@ const style = {
 class ProjectCard extends React.Component {
   render() {
     const {
-      classes, title, image, children, toLive, toSource, toMore,
+      classes, title, image, children, live, source, more,
     } = this.props;
     return (
       <Card style={{ width: '20rem' }}>
@@ -30,9 +30,9 @@ class ProjectCard extends React.Component {
         <CardBody>
           <h4 className={classes.cardTitle}>{title}</h4>
           <p>{children}</p>
-          <a href={toLive} target="_blank" rel="noopener noreferrer">Live</a>
-          <a href={toSource} target="_blank" rel="noopener noreferrer">Source Code</a>
-          <Link to={toMore}>View More</Link>
+          <a href={live} target="_blank" rel="noopener noreferrer">Live</a>
+          <a href={source} target="_blank" rel="noopener noreferrer">Source Code</a>
+          <Link to={more}>View More</Link>
         </CardBody>
       </Card>
     );

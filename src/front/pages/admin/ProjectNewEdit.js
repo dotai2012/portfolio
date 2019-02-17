@@ -5,8 +5,10 @@ import Icon from '@material-ui/core/Icon';
 import { Email, ArrowRightAlt } from '@material-ui/icons';
 import CKEditor from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-
+import classNames from 'classnames';
 import { connect } from 'react-redux';
+
+import Dropzone from '../../components/CustomDropzone/Dropzone';
 import GridContainer from '../../components/Grid/GridContainer';
 import GridItem from '../../components/Grid/GridItem';
 import Button from '../../components/CustomButtons/Button';
@@ -17,13 +19,18 @@ import CardFooter from '../../components/Card/CardFooter';
 import CustomInput from '../../components/CustomInput/CustomInput';
 
 import loginPageStyle from '../../assets/jss/material-kit-react/views/loginPage.jsx';
-import { postProject } from '../../actions';
+import { postProject, fetchProject } from '../../actions';
+
+const mapStateToProps = ({ projects }) => ({
+  projects,
+});
 
 @withStyles(loginPageStyle)
-@connect(null, { postProject })
+@connect(mapStateToProps, { postProject, fetchProject })
 class ProjectNewEdit extends Component {
   state = {
-    name: '',
+    title: '',
+    thumbnail: [],
     live: '',
     usedTool: '',
     usedSkill: '',
@@ -33,7 +40,22 @@ class ProjectNewEdit extends Component {
     body: '',
   }
 
-  onSubmit = () => {
+  currentDrop = ''
+
+  componentDidMount = () => {
+    const { location, match } = this.props;
+    const { pathname } = location;
+    if (pathname !== '/admin/new') {
+      const { id } = match.params;
+      this.props.fetchProject(id, () => {
+        if (this.props.projects.length > 0) {
+          this.setState(this.props.projects[0]);
+        }
+      });
+    }
+  }
+
+  onSubmit = async () => {
     this.props.postProject(this.state);
     // this.props.history.push('/admin');
   }
@@ -42,9 +64,16 @@ class ProjectNewEdit extends Component {
     this.setState({ [e.target.name]: e.target.value });
   }
 
+  onDropClick = name => () => {
+    this.currentDrop = name;
+  }
+
+  onDrop = (files) => {
+    this.setState({ [this.currentDrop]: files });
+  }
+
   onFileInputChange = (e) => {
     this.setState({ [e.target.name]: e.target.files });
-    console.log(this.state);
   }
 
   render() {
@@ -61,22 +90,37 @@ class ProjectNewEdit extends Component {
                     <CardBody>
                       <CustomInput
                         labelText="Project Name"
-                        id="name"
+                        id="title"
                         formControlProps={{
                           fullWidth: true,
                         }}
                         inputProps={{
                           type: 'text',
-                          name: 'projectName',
+                          name: 'title',
                           endAdornment: (
                             <InputAdornment position="end">
                               <ArrowRightAlt className={classes.inputIconsColor} />
                             </InputAdornment>
                           ),
-                          value: this.state.name,
+                          value: this.state.title,
                           onChange: this.onInputChange,
                         }}
                       />
+                      <Dropzone onDrop={this.onDrop} multiple={false} onClick={this.onDropClick('thumbnail')}>
+                            {({ getRootProps, getInputProps, isDragActive }) => (
+                                <div
+                                  {...getRootProps()}
+                                  className={classNames('dropzone', { 'dropzone--isActive': isDragActive })}
+                                >
+                                  <input {...getInputProps()} />
+                                  {
+                                    isDragActive
+                                      ? <p>Drop files here...</p>
+                                      : <p>Try dropping some files here, or click to select files to upload.</p>
+                                  }
+                                </div>
+                            )}
+                      </Dropzone>
                       <CustomInput
                         labelText="Live Site"
                         id="live"
@@ -156,32 +200,36 @@ class ProjectNewEdit extends Component {
                             console.log('Focus.', editor);
                           } }
                       />
-                      <Button
-                        variant="contained"
-                        component="label"
-                      >
-                        Upload Wireframe Images
-                        <input
-                          type="file"
-                          name="wireframe"
-                          multiple
-                          className={classes.inputHidden}
-                          onChange={this.onFileInputChange}
-                        />
-                      </Button>
-                      <Button
-                        variant="contained"
-                        component="label"
-                      >
-                        Upload Sitemap Image
-                        <input
-                          type="file"
-                          name="sitemap"
-                          multiple
-                          className={classes.inputHidden}
-                          onChange={this.onFileInputChange}
-                        />
-                      </Button>
+                      <Dropzone onDrop={this.onDrop} onClick={this.onDropClick('wireframe')}>
+                            {({ getRootProps, getInputProps, isDragActive }) => (
+                                <div
+                                  {...getRootProps()}
+                                  className={classNames('dropzone', { 'dropzone--isActive': isDragActive })}
+                                >
+                                  <input {...getInputProps()} />
+                                  {
+                                    isDragActive
+                                      ? <p>Drop files here...</p>
+                                      : <p>Try dropping some files here, or click to select files to upload.</p>
+                                  }
+                                </div>
+                            )}
+                      </Dropzone>
+                      <Dropzone onDrop={this.onDrop} onClick={this.onDropClick('sitemap')}>
+                            {({ getRootProps, getInputProps, isDragActive }) => (
+                                <div
+                                  {...getRootProps()}
+                                  className={classNames('dropzone', { 'dropzone--isActive': isDragActive })}
+                                >
+                                  <input {...getInputProps()} />
+                                  {
+                                    isDragActive
+                                      ? <p>Drop files here...</p>
+                                      : <p>Try dropping some files here, or click to select files to upload.</p>
+                                  }
+                                </div>
+                            )}
+                      </Dropzone>
                       <CKEditor
                           editor={ ClassicEditor }
                           name="body"
