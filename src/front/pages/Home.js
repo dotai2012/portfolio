@@ -21,9 +21,11 @@ class Home extends Component {
   renderProject = () => this.props.projects.map(({
     title, thumbnail, introduction, source, slug,
   }, index) => (
-        <ProjectCard key={index} title={title} image={thumbnail} source={source} more={slug} >
-              {introduction}
-        </ProjectCard>
+      <GridItem xs={12} sm={12} md={6} key={index}>
+        <ProjectCard title={title} image={thumbnail} source={source} more={slug} >
+                {introduction}
+          </ProjectCard>
+      </GridItem>
   ))
 
   render() {
@@ -57,9 +59,9 @@ class Home extends Component {
         </Parallax>
         <div className={classNames(classes.main, classes.mainRaised)}>
           <div className={classes.container}>
-            <ProjectCard title="Test" image="https://demos.creative-tim.com/material-kit-react/static/media/bg4.199e9ec1.jpg" toLive="https://www.youtube.com/watch?v=dQw4w9WgXcQ" toSource="https://www.youtube.com/watch?v=dQw4w9WgXcQ" toMore="/more" >
-              fgjdsbhfjsfdhbgjfdgjdgjv
-            </ProjectCard>
+          <GridContainer justify="center">
+              {this.renderProject()}
+          </GridContainer>
           </div>
         </div>
 

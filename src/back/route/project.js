@@ -22,10 +22,10 @@ router.route('/')
   .get(passport.authenticate('jwt', { session: false }), listProject)
   .post(passport.authenticate('jwt', { session: false }), upload.any(), addProject);
 
-router.route('/:projectId')
+router.route('/:slug')
   .get(passport.authenticate('jwt', { session: false }), viewProject)
   .put(passport.authenticate('jwt', { session: false }), editProject)
   .delete(passport.authenticate('jwt', { session: false }), deleteProject);
 
-router.get('/:projectId/user', passport.authenticate('jwt', { session: false }), getUser);
+router.get('/:slug/user', passport.authenticate('jwt', { session: false }), getUser);
 export default router;

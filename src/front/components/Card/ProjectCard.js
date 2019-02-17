@@ -13,6 +13,10 @@ const style = {
   cardTitle,
 };
 
+const inlineStyle = {
+  img: { height: '180px', width: '100%', display: 'block', objectFit: 'cover' }
+}
+
 @withStyles(style)
 class ProjectCard extends React.Component {
   render() {
@@ -20,9 +24,9 @@ class ProjectCard extends React.Component {
       classes, title, image, children, live, source, more,
     } = this.props;
     return (
-      <Card style={{ width: '20rem' }}>
+      <Card>
         <img
-          style={{ height: '180px', width: '100%', display: 'block' }}
+          style={inlineStyle.img}
           className={classes.imgCardTop}
           src={image}
           alt="Card-img-cap"

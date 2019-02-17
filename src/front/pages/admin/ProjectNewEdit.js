@@ -32,6 +32,7 @@ class ProjectNewEdit extends Component {
     title: '',
     thumbnail: [],
     live: '',
+    souce: '',
     usedTool: '',
     usedSkill: '',
     wireframe: [],
@@ -138,6 +139,26 @@ class ProjectNewEdit extends Component {
                             </InputAdornment>
                           ),
                           value: this.state.live,
+                          onChange: this.onInputChange,
+                        }}
+                      />
+                      <CustomInput
+                        labelText="Source Code"
+                        id="source"
+                        formControlProps={{
+                          fullWidth: true,
+                        }}
+                        inputProps={{
+                          type: 'text',
+                          name: 'source',
+                          endAdornment: (
+                            <InputAdornment position="end">
+                              <Icon className={classes.inputIconsColor}>
+                                lock_outline
+                              </Icon>
+                            </InputAdornment>
+                          ),
+                          value: this.state.source,
                           onChange: this.onInputChange,
                         }}
                       />

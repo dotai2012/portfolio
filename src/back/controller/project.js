@@ -6,9 +6,9 @@ import Project from '../model/project';
 
 const getUser = (req, res) => {
   const {
-    projectId,
+    slug,
   } = req.params;
-  const query = Project.findById(projectId).populate('user');
+  const query = Project.findById({ slug }).populate('user');
   query.exec((err, result) => {
     returnQuery(err, result.user, res);
   });
@@ -56,9 +56,9 @@ const addProject = (req, res) => {
 
 const viewProject = (req, res) => {
   const {
-    projectId,
+    slug,
   } = req.params;
-  const query = Project.findById(projectId);
+  const query = Project.findOne({ slug });
   query.exec((err, result) => {
     returnQuery(err, result, res);
   });
@@ -66,12 +66,12 @@ const viewProject = (req, res) => {
 
 const editProject = (req, res) => {
   const {
-    projectId,
+    slug,
   } = req.params;
   const {
     title, tags, description, _user,
   } = req.body;
-  const query = Project.findByIdAndUpdate(projectId, {
+  const query = Project.findOneAndUpdate({ slug }, {
     title, tags, description, _user,
   });
   query.exec((err, result) => {
@@ -81,9 +81,9 @@ const editProject = (req, res) => {
 
 const deleteProject = (req, res) => {
   const {
-    projectId,
+    slug,
   } = req.params;
-  const query = Project.findByIdAndDelete(projectId);
+  const query = Project.findOneAndDelete({ slug });
   query.exec((err, result) => {
     returnQuery(err, result, res);
   });

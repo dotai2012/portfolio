@@ -206,6 +206,72 @@ if (false) {} else {
 
 /***/ }),
 
+/***/ "./src/back/controller/message.js":
+/*!****************************************!*\
+  !*** ./src/back/controller/message.js ***!
+  \****************************************/
+/*! exports provided: listMessage, addMessage, viewMessage, deleteMessage */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "listMessage", function() { return listMessage; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "addMessage", function() { return addMessage; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "viewMessage", function() { return viewMessage; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "deleteMessage", function() { return deleteMessage; });
+/* harmony import */ var _service_query__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../service/query */ "./src/back/service/query.js");
+/* harmony import */ var _model_message__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../model/message */ "./src/back/model/message.js");
+
+
+
+var listMessage = function listMessage(req, res) {
+  var query = _model_message__WEBPACK_IMPORTED_MODULE_1__["default"].find({});
+  query.exec(function (err, result) {
+    Object(_service_query__WEBPACK_IMPORTED_MODULE_0__["default"])(err, result, res);
+  });
+};
+
+var addMessage = function addMessage(req, res) {
+  var _req$body = req.body,
+      title = _req$body.title,
+      name = _req$body.name,
+      email = _req$body.email,
+      body = _req$body.body;
+  var newMessage = new _model_message__WEBPACK_IMPORTED_MODULE_1__["default"]({
+    title: title,
+    name: name,
+    email: email,
+    body: body
+  });
+  newMessage.save(function (err, result) {
+    Object(_service_query__WEBPACK_IMPORTED_MODULE_0__["default"])(err, result, res);
+  });
+};
+
+var viewMessage = function viewMessage(req, res) {
+  var slug = req.params.slug;
+  var query = _model_message__WEBPACK_IMPORTED_MODULE_1__["default"].findOne({
+    slug: slug
+  });
+  query.exec(function (err, result) {
+    Object(_service_query__WEBPACK_IMPORTED_MODULE_0__["default"])(err, result, res);
+  });
+};
+
+var deleteMessage = function deleteMessage(req, res) {
+  var slug = req.params.slug;
+  var query = _model_message__WEBPACK_IMPORTED_MODULE_1__["default"].findOneAndDelete({
+    slug: slug
+  });
+  query.exec(function (err, result) {
+    Object(_service_query__WEBPACK_IMPORTED_MODULE_0__["default"])(err, result, res);
+  });
+};
+
+
+
+/***/ }),
+
 /***/ "./src/back/controller/project.js":
 /*!****************************************!*\
   !*** ./src/back/controller/project.js ***!
@@ -233,8 +299,10 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var getUser = function getUser(req, res) {
-  var projectId = req.params.projectId;
-  var query = _model_project__WEBPACK_IMPORTED_MODULE_3__["default"].findById(projectId).populate('user');
+  var slug = req.params.slug;
+  var query = _model_project__WEBPACK_IMPORTED_MODULE_3__["default"].findById({
+    slug: slug
+  }).populate('user');
   query.exec(function (err, result) {
     Object(_service_query__WEBPACK_IMPORTED_MODULE_2__["default"])(err, result.user, res);
   });
@@ -301,21 +369,25 @@ var addProject = function addProject(req, res) {
 };
 
 var viewProject = function viewProject(req, res) {
-  var projectId = req.params.projectId;
-  var query = _model_project__WEBPACK_IMPORTED_MODULE_3__["default"].findById(projectId);
+  var slug = req.params.slug;
+  var query = _model_project__WEBPACK_IMPORTED_MODULE_3__["default"].findOne({
+    slug: slug
+  });
   query.exec(function (err, result) {
     Object(_service_query__WEBPACK_IMPORTED_MODULE_2__["default"])(err, result, res);
   });
 };
 
 var editProject = function editProject(req, res) {
-  var projectId = req.params.projectId;
+  var slug = req.params.slug;
   var _req$body2 = req.body,
       title = _req$body2.title,
       tags = _req$body2.tags,
       description = _req$body2.description,
       _user = _req$body2._user;
-  var query = _model_project__WEBPACK_IMPORTED_MODULE_3__["default"].findByIdAndUpdate(projectId, {
+  var query = _model_project__WEBPACK_IMPORTED_MODULE_3__["default"].findOneAndUpdate({
+    slug: slug
+  }, {
     title: title,
     tags: tags,
     description: description,
@@ -327,8 +399,10 @@ var editProject = function editProject(req, res) {
 };
 
 var deleteProject = function deleteProject(req, res) {
-  var projectId = req.params.projectId;
-  var query = _model_project__WEBPACK_IMPORTED_MODULE_3__["default"].findByIdAndDelete(projectId);
+  var slug = req.params.slug;
+  var query = _model_project__WEBPACK_IMPORTED_MODULE_3__["default"].findOneAndDelete({
+    slug: slug
+  });
   query.exec(function (err, result) {
     Object(_service_query__WEBPACK_IMPORTED_MODULE_2__["default"])(err, result, res);
   });
@@ -448,6 +522,49 @@ var deleteUser = function deleteUser(req, res) {
 };
 
 
+
+/***/ }),
+
+/***/ "./src/back/model/message.js":
+/*!***********************************!*\
+  !*** ./src/back/model/message.js ***!
+  \***********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var mongoose__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! mongoose */ "mongoose");
+/* harmony import */ var mongoose__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(mongoose__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var mongoose_slug_updater__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! mongoose-slug-updater */ "mongoose-slug-updater");
+/* harmony import */ var mongoose_slug_updater__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(mongoose_slug_updater__WEBPACK_IMPORTED_MODULE_1__);
+
+
+mongoose__WEBPACK_IMPORTED_MODULE_0___default.a.plugin(mongoose_slug_updater__WEBPACK_IMPORTED_MODULE_1___default.a);
+var messageSchema = mongoose__WEBPACK_IMPORTED_MODULE_0___default.a.Schema({
+  title: {
+    type: String,
+    required: true
+  },
+  name: {
+    type: String,
+    required: true
+  },
+  email: {
+    type: String,
+    required: true
+  },
+  body: {
+    type: String,
+    required: true
+  },
+  slug: {
+    type: String,
+    slug: 'title'
+  }
+});
+var message = mongoose__WEBPACK_IMPORTED_MODULE_0___default.a.model('Message', messageSchema);
+/* harmony default export */ __webpack_exports__["default"] = (message);
 
 /***/ }),
 
@@ -599,12 +716,45 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var express__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(express__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _user__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./user */ "./src/back/route/user.js");
 /* harmony import */ var _project__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./project */ "./src/back/route/project.js");
+/* harmony import */ var _message__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./message */ "./src/back/route/message.js");
+
 
 
 
 var router = express__WEBPACK_IMPORTED_MODULE_0___default.a.Router();
 router.use('/user', _user__WEBPACK_IMPORTED_MODULE_1__["default"]);
 router.use('/project', _project__WEBPACK_IMPORTED_MODULE_2__["default"]);
+router.use('/message', _message__WEBPACK_IMPORTED_MODULE_4__["default"]);
+/* harmony default export */ __webpack_exports__["default"] = (router);
+
+/***/ }),
+
+/***/ "./src/back/route/message.js":
+/*!***********************************!*\
+  !*** ./src/back/route/message.js ***!
+  \***********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var express__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! express */ "express");
+/* harmony import */ var express__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(express__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var passport__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! passport */ "passport");
+/* harmony import */ var passport__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(passport__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _controller_message__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../controller/message */ "./src/back/controller/message.js");
+
+
+
+var router = express__WEBPACK_IMPORTED_MODULE_0___default.a.Router();
+router.route('/').get(passport__WEBPACK_IMPORTED_MODULE_1___default.a.authenticate('jwt', {
+  session: false
+}), _controller_message__WEBPACK_IMPORTED_MODULE_2__["listMessage"]).post(_controller_message__WEBPACK_IMPORTED_MODULE_2__["addMessage"]);
+router.route('/:slug').get(passport__WEBPACK_IMPORTED_MODULE_1___default.a.authenticate('jwt', {
+  session: false
+}), _controller_message__WEBPACK_IMPORTED_MODULE_2__["viewMessage"]).delete(passport__WEBPACK_IMPORTED_MODULE_1___default.a.authenticate('jwt', {
+  session: false
+}), _controller_message__WEBPACK_IMPORTED_MODULE_2__["deleteMessage"]);
 /* harmony default export */ __webpack_exports__["default"] = (router);
 
 /***/ }),
@@ -646,14 +796,14 @@ router.route('/').get(passport__WEBPACK_IMPORTED_MODULE_1___default.a.authentica
 }), _controller_project__WEBPACK_IMPORTED_MODULE_3__["listProject"]).post(passport__WEBPACK_IMPORTED_MODULE_1___default.a.authenticate('jwt', {
   session: false
 }), upload.any(), _controller_project__WEBPACK_IMPORTED_MODULE_3__["addProject"]);
-router.route('/:projectId').get(passport__WEBPACK_IMPORTED_MODULE_1___default.a.authenticate('jwt', {
+router.route('/:slug').get(passport__WEBPACK_IMPORTED_MODULE_1___default.a.authenticate('jwt', {
   session: false
 }), _controller_project__WEBPACK_IMPORTED_MODULE_3__["viewProject"]).put(passport__WEBPACK_IMPORTED_MODULE_1___default.a.authenticate('jwt', {
   session: false
 }), _controller_project__WEBPACK_IMPORTED_MODULE_3__["editProject"]).delete(passport__WEBPACK_IMPORTED_MODULE_1___default.a.authenticate('jwt', {
   session: false
 }), _controller_project__WEBPACK_IMPORTED_MODULE_3__["deleteProject"]);
-router.get('/:projectId/user', passport__WEBPACK_IMPORTED_MODULE_1___default.a.authenticate('jwt', {
+router.get('/:slug/user', passport__WEBPACK_IMPORTED_MODULE_1___default.a.authenticate('jwt', {
   session: false
 }), _controller_project__WEBPACK_IMPORTED_MODULE_3__["getUser"]);
 /* harmony default export */ __webpack_exports__["default"] = (router);
@@ -677,12 +827,10 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var router = express__WEBPACK_IMPORTED_MODULE_0___default.a.Router();
-router.post('/register', _controller_user__WEBPACK_IMPORTED_MODULE_2__["registerUser"]);
-router.post('/login', _controller_user__WEBPACK_IMPORTED_MODULE_2__["loginUser"]);
-router.delete('/', passport__WEBPACK_IMPORTED_MODULE_1___default.a.authenticate('jwt', {
-  session: false
-}), _controller_user__WEBPACK_IMPORTED_MODULE_2__["deleteUser"]);
+var router = express__WEBPACK_IMPORTED_MODULE_0___default.a.Router(); // router.post('/register', registerUser); Disable
+
+router.post('/login', _controller_user__WEBPACK_IMPORTED_MODULE_2__["loginUser"]); // router.delete('/', passport.authenticate('jwt', { session: false }), deleteUser); // Disable
+
 /* harmony default export */ __webpack_exports__["default"] = (router);
 
 /***/ }),
