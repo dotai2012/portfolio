@@ -1,12 +1,25 @@
 import React, { Component, Suspense } from 'react';
 import { withRouter } from 'react-router-dom';
-import RouteApp from '../route';
-import '../assets/scss/material-kit-react.scss';
+import { withStyles } from '@material-ui/core/styles';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
+import logoImage from '../assets/img/logo.png';
+
+import '../assets/scss/material-kit-react.scss';
+import RouteApp from '../route';
+
+const style = {
+  logo: {
+    width: '4rem',
+  },
+};
 
 @withRouter
+@withStyles(style)
 class App extends Component {
   renderApp = () => {
+    const { classes } = this.props;
     if (!this.props.location.pathname.startsWith('/admin')) {
       const Headers = React.lazy(() => import('./Header/Header'));
       const HeaderLinks = React.lazy(() => import('./Header/HeaderLinks'));
@@ -16,11 +29,11 @@ class App extends Component {
             <Suspense fallback={<div>Loading...</div>}>
               <Headers
                 color="transparent"
-                brand="Tai Do"
+                brand={<img src={logoImage} className={classes.logo} />}
                 rightLinks={<HeaderLinks />}
                 fixed
                 changeColorOnScroll={{
-                  height: 400,
+                  height: 150,
                   color: 'white',
                 }}
               />
@@ -44,6 +57,7 @@ class App extends Component {
   render() {
     return (
       <React.Fragment>
+        <ToastContainer />
         {this.renderApp()}
       </React.Fragment>
     );

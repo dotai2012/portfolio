@@ -43,16 +43,15 @@ class ProjectNewEdit extends Component {
 
   currentDrop = ''
 
-  componentDidMount = () => {
+  componentDidMount = async () => {
     const { location, match } = this.props;
     const { pathname } = location;
     if (pathname !== '/admin/new') {
       const { id } = match.params;
-      this.props.fetchProject(id, () => {
-        if (this.props.projects.length > 0) {
-          this.setState(this.props.projects[0]);
-        }
-      });
+      await this.props.fetchProject(id);
+      if (this.props.projects.length > 0) {
+        this.setState(this.props.projects[0]);
+      }
     }
   }
 

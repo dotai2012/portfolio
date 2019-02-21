@@ -17,6 +17,7 @@ const signupPageStyle = {
     height: 'auto',
     display: 'inherit',
     position: 'relative',
+    backgroundAttachment: 'fixed',
     margin: '0',
     padding: '0',
     border: '0',

@@ -10,7 +10,8 @@ const landingPageStyle = {
     textAlign: 'center',
   },
   title: {
-    ...title,
+    textTransform: 'uppercase',
+    fontWeight: 700,
     display: 'inline-block',
     position: 'relative',
     marginTop: '30px',

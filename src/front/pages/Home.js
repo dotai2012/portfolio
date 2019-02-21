@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+
+import natureBackground from '../assets/img/background-1.jpg';
 
 import Button from '../components/CustomButtons/Button';
 import Parallax from '../components/Parallax/Parallax';
@@ -32,26 +35,22 @@ class Home extends Component {
     const { classes } = this.props;
     return (
       <React.Fragment>
-        <Parallax filter image="https://demos.creative-tim.com/material-kit-react/static/media/bg4.199e9ec1.jpg">
+        <Parallax filter image={natureBackground}>
           <div className={classes.container}>
             <GridContainer>
               <GridItem className={classes.center}>
-                <h1 className={classes.title}>Your Story Starts With Us.</h1>
+                <h1 className={classes.title}>Tai Do</h1>
                 <h4>
-                  Every landing page needs a small description after the big
-                  bold title, that's why we added this text here. Add here all
-                  the information that can make you or your product create the
-                  first impression.
+                  A Web Developer / Designer
                 </h4>
                 <br />
                 <Button
-                  color="danger"
+                  color="info"
                   size="lg"
-                  href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  component={Link}
+                  to="/about"
                 >
-                  <i className="fas fa-play" />Watch video
+                  <i className="fas fa-male" /> About Me
                 </Button>
               </GridItem>
             </GridContainer>

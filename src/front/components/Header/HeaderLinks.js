@@ -25,15 +25,6 @@ function HeaderLinks({ ...props }) {
       </ListItem>
       <ListItem className={classes.listItem}>
         <Link
-          to="/projects"
-          color="transparent"
-          className={classes.navLink}
-        >
-           Projects
-        </Link>
-      </ListItem>
-      <ListItem className={classes.listItem}>
-        <Link
           to="/about"
           color="transparent"
           className={classes.navLink}

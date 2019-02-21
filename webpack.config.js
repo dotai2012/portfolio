@@ -1,5 +1,6 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 
 const config = {
   entry: { bundle: './src/front/index.js' },
@@ -68,6 +69,9 @@ const config = {
       filename: '[name].css',
       chunkFilename: '[id].css',
     }),
+    new CopyPlugin([
+      { from: 'src/front/assets/img/favicon' },
+    ]),
   ],
 };
 module.exports = config;

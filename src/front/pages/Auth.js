@@ -1,13 +1,12 @@
 
 import React from 'react';
-// @material-ui/core components
-import withStyles from '@material-ui/core/styles/withStyles';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import Icon from '@material-ui/core/Icon';
-// @material-ui/icons
+import { withStyles } from '@material-ui/core/styles';
+import { InputAdornment, Icon } from '@material-ui/core';
 import Email from '@material-ui/icons/Email';
-// core components
 import { connect } from 'react-redux';
+
+import abstractBackground from '../assets/img/background-4.png';
+
 import GridContainer from '../components/Grid/GridContainer';
 import GridItem from '../components/Grid/GridItem';
 import Button from '../components/CustomButtons/Button';
@@ -68,75 +67,75 @@ class LoginPage extends React.Component {
   render() {
     const { classes } = this.props;
     return (
-        <div
-          className={classes.pageHeader}
-          style={{
-            backgroundImage: 'url(https://demos.creative-tim.com/material-kit-react/static/media/bg4.199e9ec1.jpg)',
-            backgroundSize: 'cover',
-            backgroundPosition: 'top center',
-          }}
-        >
-          <div className={classes.container}>
-            <GridContainer justify="center">
-              <GridItem xs={12} sm={12} md={4}>
-                <Card className={classes[this.state.cardAnimaton]}>
-                  <form className={classes.form}>
-                    <CardHeader color="primary" className={classes.cardHeader}>
-                      <h4>Authentication</h4>
-                    </CardHeader>
-                    <CardBody>
-                      <CustomInput
-                        labelText="Email..."
-                        id="email"
-                        formControlProps={{
-                          fullWidth: true,
-                        }}
-                        inputProps={{
-                          type: 'email',
-                          name: 'email',
-                          endAdornment: (
-                            <InputAdornment position="end">
-                              <Email className={classes.inputIconsColor} />
-                            </InputAdornment>
-                          ),
-                          value: this.state.email,
-                          onChange: this.onInputChange,
-                        }}
-                      />
-                      <CustomInput
-                        labelText="Password"
-                        id="password"
-                        formControlProps={{
-                          fullWidth: true,
-                        }}
-                        inputProps={{
-                          type: 'password',
-                          name: 'password',
-                          endAdornment: (
-                            <InputAdornment position="end">
-                              <Icon className={classes.inputIconsColor}>
-                                lock_outline
-                              </Icon>
-                            </InputAdornment>
-                          ),
-                          value: this.state.password,
-                          onChange: this.onInputChange,
-                          onKeyPress: this.onInputKeyPress,
-                        }}
-                      />
-                    </CardBody>
-                    <CardFooter className={classes.cardFooter}>
-                      <Button simple color="primary" size="lg" onClick={this.onLogin}>
-                        Login
-                      </Button>
-                    </CardFooter>
-                  </form>
-                </Card>
-              </GridItem>
-            </GridContainer>
-          </div>
-          <Footer whiteFont />
+      <div
+        className={classes.pageHeader}
+        style={{
+          backgroundImage: `url(${abstractBackground})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'top center',
+        }}
+      >
+        <div className={classes.container}>
+          <GridContainer justify="center">
+            <GridItem xs={12} sm={12} md={4}>
+              <Card className={classes[this.state.cardAnimaton]}>
+                <form className={classes.form}>
+                  <CardHeader color="info" className={classes.cardHeader}>
+                    <h4>Authentication</h4>
+                  </CardHeader>
+                  <CardBody>
+                    <CustomInput
+                      labelText="Email..."
+                      id="email"
+                      formControlProps={{
+                        fullWidth: true,
+                      }}
+                      inputProps={{
+                        type: 'email',
+                        name: 'email',
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <Email className={classes.inputIconsColor} />
+                          </InputAdornment>
+                        ),
+                        value: this.state.email,
+                        onChange: this.onInputChange,
+                      }}
+                    />
+                    <CustomInput
+                      labelText="Password"
+                      id="password"
+                      formControlProps={{
+                        fullWidth: true,
+                      }}
+                      inputProps={{
+                        type: 'password',
+                        name: 'password',
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <Icon className={classes.inputIconsColor}>
+                              lock_outline
+                            </Icon>
+                          </InputAdornment>
+                        ),
+                        value: this.state.password,
+                        onChange: this.onInputChange,
+                        onKeyPress: this.onInputKeyPress,
+                      }}
+                    />
+                  </CardBody>
+                  <CardFooter className={classes.cardFooter}>
+                    <Button simple color="info" size="lg" onClick={this.onLogin}>
+                      Login
+                    </Button>
+                  </CardFooter>
+                </form>
+              </Card>
+            </GridItem>
+          </GridContainer>
         </div>
+        <Footer whiteFont />
+      </div>
     );
   }
 }

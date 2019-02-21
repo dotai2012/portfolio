@@ -4,8 +4,8 @@ import {
   Table, TableBody, TableCell, TableHead, TableRow, Paper,
 } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
-
 import { Link } from 'react-router-dom';
+
 import Button from '../../components/CustomButtons/Button';
 
 import { fetchProjects, deleteProject } from '../../actions';

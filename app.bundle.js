@@ -716,7 +716,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var express__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(express__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _user__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./user */ "./src/back/route/user.js");
 /* harmony import */ var _project__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./project */ "./src/back/route/project.js");
-/* harmony import */ var _message__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./message */ "./src/back/route/message.js");
+/* harmony import */ var _message__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./message */ "./src/back/route/message.js");
 
 
 
@@ -724,7 +724,7 @@ __webpack_require__.r(__webpack_exports__);
 var router = express__WEBPACK_IMPORTED_MODULE_0___default.a.Router();
 router.use('/user', _user__WEBPACK_IMPORTED_MODULE_1__["default"]);
 router.use('/project', _project__WEBPACK_IMPORTED_MODULE_2__["default"]);
-router.use('/message', _message__WEBPACK_IMPORTED_MODULE_4__["default"]);
+router.use('/message', _message__WEBPACK_IMPORTED_MODULE_3__["default"]);
 /* harmony default export */ __webpack_exports__["default"] = (router);
 
 /***/ }),
@@ -884,7 +884,7 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 var returnQuery = function returnQuery(err, result, res) {
   if (err) {
-    res.json({
+    res.status(400).json({
       success: false,
       msg: 'Something wrong',
       debug: err

@@ -16,7 +16,7 @@ const endPoint = axios.create({
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(reducers, composeEnhancers(
-  applyMiddleware(checkToken, thunk.withExtraArgument(endPoint)),
+  applyMiddleware(thunk.withExtraArgument(endPoint), checkToken),
 ));
 
 ReactDOM.render(
