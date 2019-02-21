@@ -15,18 +15,16 @@ const fetchMessages = () => async (dispatch, getState, api) => {
   });
 };
 
-const fetchMessage = (slug, cb) => async (dispatch, getState, api) => {
+const fetchMessage = slug => async (dispatch, getState, api) => {
   const res = await api.get(`/message/${slug}`, { headers: { Authorization: token } });
   dispatch({
     type: CURRENT_MESSAGE,
     payload: res.data.msg,
   });
-  cb();
+  return res;
 };
 
-const postMessage = data => (dispatch, getState, api) => {
-  return api.post('/message', data, { headers: { Authorization: token } });
-};
+const postMessage = data => (dispatch, getState, api) => api.post('/message', data, { headers: { Authorization: token } });
 
 const deleteMessage = slug => async (dispatch, getState, api) => {
   await api.delete(`/message/${slug}`, { headers: { Authorization: token } });

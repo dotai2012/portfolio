@@ -54,6 +54,10 @@ const addProject = (req, res) => {
   });
 };
 
+const uploadAdapter = (req, res) => {
+  res.status(200).json({ success: true });
+};
+
 const viewProject = (req, res) => {
   const {
     slug,
@@ -92,6 +96,7 @@ const deleteProject = (req, res) => {
 export {
   listProject,
   addProject,
+  uploadAdapter,
   viewProject,
   editProject,
   deleteProject,

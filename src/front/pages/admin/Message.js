@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 
 import Button from '../../components/CustomButtons/Button';
 
-import { fetchProjects, deleteProject } from '../../actions';
+import { fetchMessages, deleteMessage } from '../../actions';
 
 const styles = theme => ({
   root: {
@@ -26,17 +26,17 @@ const mapStateToProps = ({ projects }) => ({
 });
 
 @withStyles(styles)
-@connect(mapStateToProps, { fetchProjects, deleteProject })
-class Project extends Component {
+@connect(mapStateToProps, { fetchMessages, deleteMessage })
+class Message extends Component {
   componentDidMount() {
-    this.props.fetchProjects();
+    this.props.fetchMessages();
   }
 
-  onDeleteProject = slug => () => {
-    this.props.deleteProject(slug);
+  onDeleteMessage = slug => () => {
+    this.props.deleteMessage(slug);
   }
 
-  renderProjects = () => this.props.projects.map(({ title, slug }, index) => (
+  renderMessages = () => this.props.projects.map(({ title, slug }, index) => (
         <TableRow key={index}>
               <TableCell component="th" scope="row">
                 {title}
@@ -48,7 +48,7 @@ class Project extends Component {
                 <Button simple component={Link} to={`/admin/project/${slug}`} color="facebook">
                   Edit
                 </Button>
-                <Button simple color="facebook" onClick={this.onDeleteProject(slug)}>
+                <Button simple color="facebook" onClick={this.onDeleteMessage(slug)}>
                   Delete
                 </Button>
               </TableCell>
@@ -59,19 +59,16 @@ class Project extends Component {
     const { classes } = this.props;
     return (
       <React.Fragment>
-        <Button component={Link} to='/admin/new' color="facebook" size="lg" onClick={this.onLogin}>
-            New Project
-        </Button>
         <Paper className={classes.root}>
           <Table className={classes.table}>
             <TableHead>
               <TableRow>
-                <TableCell>Project Title</TableCell>
+                <TableCell>Message Title</TableCell>
                 <TableCell align="right">Action</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {this.renderProjects()}
+              {this.renderMessages()}
             </TableBody>
           </Table>
         </Paper>
@@ -80,4 +77,4 @@ class Project extends Component {
   }
 }
 
-export default Project;
+export default Message;

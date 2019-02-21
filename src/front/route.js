@@ -20,7 +20,9 @@ export default function RouteApp() {
           <Route path="/contact" component={Contact} />
           <ProtectedRoute path="/admin" exact component={Project} />
           <ProtectedRoute path="/admin/new" component={ProjectNewEdit} />
-          <ProtectedRoute path="/admin/project/:id" component={ProjectNewEdit} />
+          <ProtectedRoute path="/admin/message" component={Message} />
+          <ProtectedRoute path="/admin/message/:slug" component={MessageView} />
+          <ProtectedRoute path="/admin/project/:slug" component={ProjectNewEdit} />
           <Redirect to="/" />
     </Switch>
   );

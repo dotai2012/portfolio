@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import {
-  AppBar, CssBaseline, Divider, Drawer, Hidden, IconButton, List, ListItem, ListItemIcon, ListItemText, Toolbar, Typography,
+  AppBar, CssBaseline, Divider, Drawer, Hidden, IconButton, List, ListItem, ListItemIcon, ListItemText, Toolbar, Typography, Icon,
 } from '@material-ui/core';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MenuIcon from '@material-ui/icons/Menu';
+
 import { withStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
@@ -70,15 +69,15 @@ class ResponsiveDrawer extends Component {
         <Divider />
         <List>
           <ListItem component={Link} to="/admin">
-            <ListItemIcon><InboxIcon /></ListItemIcon>
+            <ListItemIcon><Icon>folder</Icon></ListItemIcon>
             <ListItemText primary="Projects" />
           </ListItem>
           <ListItem component={Link} to="/admin/message">
-            <ListItemIcon><InboxIcon /></ListItemIcon>
+            <ListItemIcon><Icon>message</Icon></ListItemIcon>
             <ListItemText primary="Messages" />
           </ListItem>
           <ListItem button onClick={this.onLogout}>
-            <ListItemIcon><InboxIcon /></ListItemIcon>
+            <ListItemIcon><Icon>eject</Icon></ListItemIcon>
             <ListItemText primary="Logout" />
           </ListItem>
         </List>
@@ -96,7 +95,7 @@ class ResponsiveDrawer extends Component {
               onClick={this.handleDrawerToggle}
               className={classes.menuButton}
             >
-              <MenuIcon />
+              <Icon>menu</Icon>
             </IconButton>
             <Typography variant="h6" color="inherit" noWrap>
               Admin Dashboard

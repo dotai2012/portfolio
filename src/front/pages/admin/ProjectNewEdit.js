@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import withStyles from '@material-ui/core/styles/withStyles';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import Icon from '@material-ui/core/Icon';
-import { Email, ArrowRightAlt } from '@material-ui/icons';
+import {InputAdornment, FormLabel, Icon } from '@material-ui/core';
 import CKEditor from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import classNames from 'classnames';
@@ -19,7 +17,9 @@ import CardFooter from '../../components/Card/CardFooter';
 import CustomInput from '../../components/CustomInput/CustomInput';
 
 import loginPageStyle from '../../assets/jss/material-kit-react/views/loginPage.jsx';
+
 import { postProject, fetchProject } from '../../actions';
+import UploadAdapter from '../../services/uploadAdapter';
 
 const mapStateToProps = ({ projects }) => ({
   projects,
@@ -47,8 +47,8 @@ class ProjectNewEdit extends Component {
     const { location, match } = this.props;
     const { pathname } = location;
     if (pathname !== '/admin/new') {
-      const { id } = match.params;
-      await this.props.fetchProject(id);
+      const { slug } = match.params;
+      await this.props.fetchProject(slug);
       if (this.props.projects.length > 0) {
         this.setState(this.props.projects[0]);
       }
@@ -56,8 +56,8 @@ class ProjectNewEdit extends Component {
   }
 
   onSubmit = async () => {
-    this.props.postProject(this.state);
-    // this.props.history.push('/admin');
+    await this.props.postProject(this.state);
+    this.props.history.push('/admin');
   }
 
   onInputChange = (e) => {
@@ -84,7 +84,7 @@ class ProjectNewEdit extends Component {
               <GridItem xs={12} sm={12} md={8}>
                 <Card>
                   <form className={classes.form}>
-                    <CardHeader color="primary" className={classes.cardHeader}>
+                    <CardHeader color="info" className={classes.cardHeader}>
                       <h4>Add New / Edit Project</h4>
                     </CardHeader>
                     <CardBody>
@@ -99,7 +99,9 @@ class ProjectNewEdit extends Component {
                           name: 'title',
                           endAdornment: (
                             <InputAdornment position="end">
-                              <ArrowRightAlt className={classes.inputIconsColor} />
+                              <Icon className={classes.inputIconsColor}>
+                                arrow_forward
+                              </Icon>
                             </InputAdornment>
                           ),
                           value: this.state.title,
@@ -133,7 +135,7 @@ class ProjectNewEdit extends Component {
                           endAdornment: (
                             <InputAdornment position="end">
                               <Icon className={classes.inputIconsColor}>
-                                lock_outline
+                              live_tv
                               </Icon>
                             </InputAdornment>
                           ),
@@ -153,7 +155,7 @@ class ProjectNewEdit extends Component {
                           endAdornment: (
                             <InputAdornment position="end">
                               <Icon className={classes.inputIconsColor}>
-                                lock_outline
+                                code
                               </Icon>
                             </InputAdornment>
                           ),
@@ -173,7 +175,7 @@ class ProjectNewEdit extends Component {
                           endAdornment: (
                             <InputAdornment position="end">
                               <Icon className={classes.inputIconsColor}>
-                                lock_outline
+                                build
                               </Icon>
                             </InputAdornment>
                           ),
@@ -193,7 +195,7 @@ class ProjectNewEdit extends Component {
                           endAdornment: (
                             <InputAdornment position="end">
                               <Icon className={classes.inputIconsColor}>
-                                lock_outline
+                              pan_tool
                               </Icon>
                             </InputAdornment>
                           ),
@@ -206,7 +208,10 @@ class ProjectNewEdit extends Component {
                           name="introduction"
                           data={this.state.introduction}
                           onInit={ (editor) => {
-                            console.log('Editor is ready to use!', editor);
+                            editor.ui.view.editable.editableElement.style.height = '200px';
+                            editor.plugins.get('FileRepository').createUploadAdapter = function (loader) {
+                              return new UploadAdapter(loader);
+                            };
                           } }
                           onChange={ (event, editor) => {
                             const data = editor.getData();
@@ -220,6 +225,7 @@ class ProjectNewEdit extends Component {
                             console.log('Focus.', editor);
                           } }
                       />
+                      <FormLabel component="legend">Gender</FormLabel>
                       <Dropzone onDrop={this.onDrop} onClick={this.onDropClick('wireframe')}>
                             {({ getRootProps, getInputProps, isDragActive }) => (
                                 <div
@@ -255,7 +261,10 @@ class ProjectNewEdit extends Component {
                           name="body"
                           data={this.state.body}
                           onInit={ (editor) => {
-                            console.log('Editor is ready to use!', editor);
+                            editor.ui.view.editable.editableElement.style.height = '200px';
+                            editor.plugins.get('FileRepository').createUploadAdapter = function (loader) {
+                              return new UploadAdapter(loader);
+                            };
                           } }
                           onChange={ (event, editor) => {
                             const data = editor.getData();
@@ -271,7 +280,7 @@ class ProjectNewEdit extends Component {
                       />
                     </CardBody>
                     <CardFooter className={classes.cardFooter}>
-                      <Button simple color="primary" size="lg" onClick={this.onSubmit}>
+                      <Button simple color="info" size="lg" onClick={this.onSubmit}>
                         Post Project
                       </Button>
                     </CardFooter>

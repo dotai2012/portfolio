@@ -276,13 +276,14 @@ var deleteMessage = function deleteMessage(req, res) {
 /*!****************************************!*\
   !*** ./src/back/controller/project.js ***!
   \****************************************/
-/*! exports provided: listProject, addProject, viewProject, editProject, deleteProject, getUser */
+/*! exports provided: listProject, addProject, uploadAdapter, viewProject, editProject, deleteProject, getUser */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "listProject", function() { return listProject; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "addProject", function() { return addProject; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "uploadAdapter", function() { return uploadAdapter; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "viewProject", function() { return viewProject; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "editProject", function() { return editProject; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "deleteProject", function() { return deleteProject; });
@@ -365,6 +366,12 @@ var addProject = function addProject(req, res) {
   });
   newProject.save(function (err, result) {
     Object(_service_query__WEBPACK_IMPORTED_MODULE_2__["default"])(err, result, res);
+  });
+};
+
+var uploadAdapter = function uploadAdapter(req, res) {
+  res.status(200).json({
+    success: true
   });
 };
 
@@ -774,14 +781,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var passport__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(passport__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var multer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! multer */ "multer");
 /* harmony import */ var multer__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(multer__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _controller_project__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../controller/project */ "./src/back/controller/project.js");
+/* harmony import */ var fs_extra__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! fs-extra */ "fs-extra");
+/* harmony import */ var fs_extra__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(fs_extra__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _controller_project__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../controller/project */ "./src/back/controller/project.js");
+
 
 
 
 
 var storage = multer__WEBPACK_IMPORTED_MODULE_2___default.a.diskStorage({
   destination: function destination(req, file, cb) {
-    cb(null, 'public/img/');
+    var folder = 'public/img/';
+    fs_extra__WEBPACK_IMPORTED_MODULE_3___default.a.ensureDir(folder).then(function () {
+      cb(null, folder);
+    }).catch(function () {
+      cb(null, folder);
+    });
   },
   filename: function filename(req, file, cb) {
     cb(null, "-".concat(Date.now()).concat(file.originalname));
@@ -793,19 +808,22 @@ var upload = multer__WEBPACK_IMPORTED_MODULE_2___default()({
 var router = express__WEBPACK_IMPORTED_MODULE_0___default.a.Router();
 router.route('/').get(passport__WEBPACK_IMPORTED_MODULE_1___default.a.authenticate('jwt', {
   session: false
-}), _controller_project__WEBPACK_IMPORTED_MODULE_3__["listProject"]).post(passport__WEBPACK_IMPORTED_MODULE_1___default.a.authenticate('jwt', {
+}), _controller_project__WEBPACK_IMPORTED_MODULE_4__["listProject"]).post(passport__WEBPACK_IMPORTED_MODULE_1___default.a.authenticate('jwt', {
   session: false
-}), upload.any(), _controller_project__WEBPACK_IMPORTED_MODULE_3__["addProject"]);
+}), upload.any(), _controller_project__WEBPACK_IMPORTED_MODULE_4__["addProject"]);
+router.post('/uploadadapter', passport__WEBPACK_IMPORTED_MODULE_1___default.a.authenticate('jwt', {
+  session: false
+}), upload.any(), _controller_project__WEBPACK_IMPORTED_MODULE_4__["uploadAdapter"]);
 router.route('/:slug').get(passport__WEBPACK_IMPORTED_MODULE_1___default.a.authenticate('jwt', {
   session: false
-}), _controller_project__WEBPACK_IMPORTED_MODULE_3__["viewProject"]).put(passport__WEBPACK_IMPORTED_MODULE_1___default.a.authenticate('jwt', {
+}), _controller_project__WEBPACK_IMPORTED_MODULE_4__["viewProject"]).put(passport__WEBPACK_IMPORTED_MODULE_1___default.a.authenticate('jwt', {
   session: false
-}), _controller_project__WEBPACK_IMPORTED_MODULE_3__["editProject"]).delete(passport__WEBPACK_IMPORTED_MODULE_1___default.a.authenticate('jwt', {
+}), _controller_project__WEBPACK_IMPORTED_MODULE_4__["editProject"]).delete(passport__WEBPACK_IMPORTED_MODULE_1___default.a.authenticate('jwt', {
   session: false
-}), _controller_project__WEBPACK_IMPORTED_MODULE_3__["deleteProject"]);
+}), _controller_project__WEBPACK_IMPORTED_MODULE_4__["deleteProject"]);
 router.get('/:slug/user', passport__WEBPACK_IMPORTED_MODULE_1___default.a.authenticate('jwt', {
   session: false
-}), _controller_project__WEBPACK_IMPORTED_MODULE_3__["getUser"]);
+}), _controller_project__WEBPACK_IMPORTED_MODULE_4__["getUser"]);
 /* harmony default export */ __webpack_exports__["default"] = (router);
 
 /***/ }),
@@ -986,6 +1004,17 @@ module.exports = require("dotenv");
 /***/ (function(module, exports) {
 
 module.exports = require("express");
+
+/***/ }),
+
+/***/ "fs-extra":
+/*!***************************!*\
+  !*** external "fs-extra" ***!
+  \***************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("fs-extra");
 
 /***/ }),
 
