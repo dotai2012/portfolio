@@ -23,7 +23,7 @@ const listProject = (req, res) => {
 
 const addProject = (req, res) => {
   const {
-    title, live, source, usedTool, usedSkill, introduction, body,
+    title, live, source, usedTool, usedSkill, introduction, content,
   } = req.body;
 
   const thumbnailFilter = _.filter(req.files, o => o.fieldname === 'thumbnail');
@@ -34,18 +34,21 @@ const addProject = (req, res) => {
   const wireframe = wireframeFilter.map(({ filename }) => filename);
   const sitemap = sitemapFilter.map(({ filename }) => filename);
 
+  const usedToolCompact = usedTool.map(({ text }) => text);
+  const usedSkillCompact = usedSkill.map(({ text }) => text);
+
   const profile = jwtDecode(req.get('Authorization'));
   const newProject = new Project({
     title,
     thumbnail,
     live,
     source,
-    usedTool,
-    usedSkill,
+    usedTool: usedToolCompact,
+    usedSkill: usedSkillCompact,
     wireframe,
     sitemap,
     introduction,
-    body,
+    content,
     user: profile._id,
   });
 
@@ -55,7 +58,9 @@ const addProject = (req, res) => {
 };
 
 const uploadAdapter = (req, res) => {
-  res.status(200).json({ success: true });
+  const ckEditorImageFilter = _.filter(req.files, o => o.fieldname === 'ckeditor_image');
+  const ckEditorImage = ckEditorImageFilter.map(({ filename }) => filename);
+  res.status(200).json({ success: true, url: `img/${ckEditorImage}` });
 };
 
 const viewProject = (req, res) => {

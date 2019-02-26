@@ -21,11 +21,11 @@ const projectSchema = mongoose.Schema({
     required: true,
   },
   usedTool: {
-    type: String,
+    type: Array,
     required: true,
   },
   usedSkill: {
-    type: String,
+    type: Array,
     required: true,
   },
   wireframe: {
@@ -40,7 +40,7 @@ const projectSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  body: {
+  content: {
     type: String,
     required: true,
   },

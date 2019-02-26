@@ -10,14 +10,14 @@ const listMessage = (req, res) => {
 
 const addMessage = (req, res) => {
   const {
-    title, name, email, body,
+    title, author, email, content,
   } = req.body;
 
   const newMessage = new Message({
     title,
-    name,
+    author,
     email,
-    body,
+    content,
   });
 
   newMessage.save((err, result) => {

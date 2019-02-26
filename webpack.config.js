@@ -1,7 +1,6 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
-const CleanPlugin = require('clean-webpack-plugin');
 
 const config = {
   entry: { bundle: './src/front/index.js' },
@@ -66,7 +65,6 @@ const config = {
     },
   },
   plugins: [
-    new CleanPlugin('public'),
     new MiniCssExtractPlugin({
       filename: '[name].css',
       chunkFilename: '[id].css',

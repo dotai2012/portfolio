@@ -12,7 +12,7 @@ class UploadAdapter {
   upload() {
     const data = new FormData();
     data.append('typeOption', 'upload_image');
-    data.append('file', this.loader.file);
+    data.append('ckeditor_image', this.loader.file);
 
     return new Promise((resolve, reject) => {
       axios({

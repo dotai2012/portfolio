@@ -33,7 +33,7 @@ class App extends Component {
                 rightLinks={<HeaderLinks />}
                 fixed
                 changeColorOnScroll={{
-                  height: 150,
+                  height: 100,
                   color: 'white',
                 }}
               />

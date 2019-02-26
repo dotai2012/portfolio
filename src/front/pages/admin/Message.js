@@ -4,7 +4,6 @@ import {
   Table, TableBody, TableCell, TableHead, TableRow, Paper,
 } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
-import { Link } from 'react-router-dom';
 
 import Button from '../../components/CustomButtons/Button';
 
@@ -21,8 +20,8 @@ const styles = theme => ({
   },
 });
 
-const mapStateToProps = ({ projects }) => ({
-  projects,
+const mapStateToProps = ({ messages }) => ({
+  messages,
 });
 
 @withStyles(styles)
@@ -36,18 +35,23 @@ class Message extends Component {
     this.props.deleteMessage(slug);
   }
 
-  renderMessages = () => this.props.projects.map(({ title, slug }, index) => (
+  renderMessages = () => this.props.messages.map(({
+    title, author, email, content, slug,
+  }, index) => (
         <TableRow key={index}>
               <TableCell component="th" scope="row">
                 {title}
               </TableCell>
+              <TableCell component="th" scope="row">
+                {author}
+              </TableCell>
+              <TableCell component="th" scope="row">
+                {email}
+              </TableCell>
+              <TableCell component="th" scope="row">
+                {content}
+              </TableCell>
               <TableCell align="right">
-                <Button simple component={Link} to={`/project/${slug}`} color="facebook">
-                  View
-                </Button>
-                <Button simple component={Link} to={`/admin/project/${slug}`} color="facebook">
-                  Edit
-                </Button>
                 <Button simple color="facebook" onClick={this.onDeleteMessage(slug)}>
                   Delete
                 </Button>
@@ -63,7 +67,10 @@ class Message extends Component {
           <Table className={classes.table}>
             <TableHead>
               <TableRow>
-                <TableCell>Message Title</TableCell>
+                <TableCell>Title</TableCell>
+                <TableCell>Author</TableCell>
+                <TableCell>Email</TableCell>
+                <TableCell>Content</TableCell>
                 <TableCell align="right">Action</TableCell>
               </TableRow>
             </TableHead>

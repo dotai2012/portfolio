@@ -8,7 +8,7 @@ const messageSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  name: {
+  author: {
     type: String,
     required: true,
   },
@@ -16,7 +16,7 @@ const messageSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  body: {
+  content: {
     type: String,
     required: true,
   },

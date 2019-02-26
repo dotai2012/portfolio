@@ -17,7 +17,7 @@ import CardFooter from '../components/Card/CardFooter';
 import CustomInput from '../components/CustomInput/CustomInput';
 import Footer from '../components/Footer/Footer';
 
-import loginPageStyle from '../assets/jss/material-kit-react/views/loginPage.jsx';
+import fixedBackgroundPageStyle from '../assets/jss/material-kit-react/views/fixedBackgroundPage.jsx';
 
 import { loginUser } from '../actions';
 
@@ -25,7 +25,7 @@ const mapStateToProps = ({ user }) => ({
   user,
 });
 
-@withStyles(loginPageStyle)
+@withStyles(fixedBackgroundPageStyle)
 @connect(mapStateToProps, { loginUser })
 class LoginPage extends React.Component {
   state = {

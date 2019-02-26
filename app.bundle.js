@@ -234,14 +234,14 @@ var listMessage = function listMessage(req, res) {
 var addMessage = function addMessage(req, res) {
   var _req$body = req.body,
       title = _req$body.title,
-      name = _req$body.name,
+      author = _req$body.author,
       email = _req$body.email,
-      body = _req$body.body;
+      content = _req$body.content;
   var newMessage = new _model_message__WEBPACK_IMPORTED_MODULE_1__["default"]({
     title: title,
-    name: name,
+    author: author,
     email: email,
-    body: body
+    content: content
   });
   newMessage.save(function (err, result) {
     Object(_service_query__WEBPACK_IMPORTED_MODULE_0__["default"])(err, result, res);
@@ -324,7 +324,7 @@ var addProject = function addProject(req, res) {
       usedTool = _req$body.usedTool,
       usedSkill = _req$body.usedSkill,
       introduction = _req$body.introduction,
-      body = _req$body.body;
+      content = _req$body.content;
 
   var thumbnailFilter = lodash__WEBPACK_IMPORTED_MODULE_1___default.a.filter(req.files, function (o) {
     return o.fieldname === 'thumbnail';
@@ -350,18 +350,26 @@ var addProject = function addProject(req, res) {
     var filename = _ref3.filename;
     return filename;
   });
+  var usedToolCompact = usedTool.map(function (_ref4) {
+    var text = _ref4.text;
+    return text;
+  });
+  var usedSkillCompact = usedSkill.map(function (_ref5) {
+    var text = _ref5.text;
+    return text;
+  });
   var profile = jwt_decode__WEBPACK_IMPORTED_MODULE_0___default()(req.get('Authorization'));
   var newProject = new _model_project__WEBPACK_IMPORTED_MODULE_3__["default"]({
     title: title,
     thumbnail: thumbnail,
     live: live,
     source: source,
-    usedTool: usedTool,
-    usedSkill: usedSkill,
+    usedTool: usedToolCompact,
+    usedSkill: usedSkillCompact,
     wireframe: wireframe,
     sitemap: sitemap,
     introduction: introduction,
-    body: body,
+    content: content,
     user: profile._id
   });
   newProject.save(function (err, result) {
@@ -370,8 +378,17 @@ var addProject = function addProject(req, res) {
 };
 
 var uploadAdapter = function uploadAdapter(req, res) {
+  var ckEditorImageFilter = lodash__WEBPACK_IMPORTED_MODULE_1___default.a.filter(req.files, function (o) {
+    return o.fieldname === 'ckeditor_image';
+  });
+
+  var ckEditorImage = ckEditorImageFilter.map(function (_ref6) {
+    var filename = _ref6.filename;
+    return filename;
+  });
   res.status(200).json({
-    success: true
+    success: true,
+    url: "img/".concat(ckEditorImage)
   });
 };
 
@@ -553,7 +570,7 @@ var messageSchema = mongoose__WEBPACK_IMPORTED_MODULE_0___default.a.Schema({
     type: String,
     required: true
   },
-  name: {
+  author: {
     type: String,
     required: true
   },
@@ -561,7 +578,7 @@ var messageSchema = mongoose__WEBPACK_IMPORTED_MODULE_0___default.a.Schema({
     type: String,
     required: true
   },
-  body: {
+  content: {
     type: String,
     required: true
   },
@@ -609,11 +626,11 @@ var projectSchema = mongoose__WEBPACK_IMPORTED_MODULE_0___default.a.Schema({
     required: true
   },
   usedTool: {
-    type: String,
+    type: Array,
     required: true
   },
   usedSkill: {
-    type: String,
+    type: Array,
     required: true
   },
   wireframe: {
@@ -628,7 +645,7 @@ var projectSchema = mongoose__WEBPACK_IMPORTED_MODULE_0___default.a.Schema({
     type: String,
     required: true
   },
-  body: {
+  content: {
     type: String,
     required: true
   },
@@ -799,24 +816,20 @@ var storage = multer__WEBPACK_IMPORTED_MODULE_2___default.a.diskStorage({
     });
   },
   filename: function filename(req, file, cb) {
-    cb(null, "-".concat(Date.now()).concat(file.originalname));
+    cb(null, "".concat(Date.now()).concat(file.originalname));
   }
 });
 var upload = multer__WEBPACK_IMPORTED_MODULE_2___default()({
   storage: storage
 });
 var router = express__WEBPACK_IMPORTED_MODULE_0___default.a.Router();
-router.route('/').get(passport__WEBPACK_IMPORTED_MODULE_1___default.a.authenticate('jwt', {
-  session: false
-}), _controller_project__WEBPACK_IMPORTED_MODULE_4__["listProject"]).post(passport__WEBPACK_IMPORTED_MODULE_1___default.a.authenticate('jwt', {
+router.route('/').get(_controller_project__WEBPACK_IMPORTED_MODULE_4__["listProject"]).post(passport__WEBPACK_IMPORTED_MODULE_1___default.a.authenticate('jwt', {
   session: false
 }), upload.any(), _controller_project__WEBPACK_IMPORTED_MODULE_4__["addProject"]);
 router.post('/uploadadapter', passport__WEBPACK_IMPORTED_MODULE_1___default.a.authenticate('jwt', {
   session: false
 }), upload.any(), _controller_project__WEBPACK_IMPORTED_MODULE_4__["uploadAdapter"]);
-router.route('/:slug').get(passport__WEBPACK_IMPORTED_MODULE_1___default.a.authenticate('jwt', {
-  session: false
-}), _controller_project__WEBPACK_IMPORTED_MODULE_4__["viewProject"]).put(passport__WEBPACK_IMPORTED_MODULE_1___default.a.authenticate('jwt', {
+router.route('/:slug').get(_controller_project__WEBPACK_IMPORTED_MODULE_4__["viewProject"]).put(passport__WEBPACK_IMPORTED_MODULE_1___default.a.authenticate('jwt', {
   session: false
 }), _controller_project__WEBPACK_IMPORTED_MODULE_4__["editProject"]).delete(passport__WEBPACK_IMPORTED_MODULE_1___default.a.authenticate('jwt', {
   session: false

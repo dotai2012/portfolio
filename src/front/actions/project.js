@@ -28,7 +28,7 @@ const postProject = data => async (dispatch, getState, api) => {
   const formData = new FormData();
 
   Object.keys(data).map((key) => {
-    if (Array.isArray(data[key])) {
+    if (Array.isArray(data[key]) && key !== 'usedTool' !== 'usedSkill') {
       data[key].map((file) => {
         formData.append(key, file);
       });

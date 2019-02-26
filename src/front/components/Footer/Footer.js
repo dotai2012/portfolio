@@ -1,80 +1,69 @@
-/*eslint-disable*/
-import React from "react";
-// nodejs library to set properties for components
-import PropTypes from "prop-types";
-// nodejs library that concatenates classes
-import classNames from "classnames";
-import { List, ListItem, withStyles } from "@material-ui/core";
+import React from 'react';
+import PropTypes from 'prop-types';
+import classNames from 'classnames';
+import {
+  List, ListItem, withStyles,
+} from '@material-ui/core';
+import { Link } from 'react-router-dom';
 
-// @material-ui/icons
-import Favorite from "@material-ui/icons/Favorite";
+import Button from '../CustomButtons/Button';
 
-import footerStyle from "../../assets/jss/material-kit-react/components/footerStyle.jsx";
+import footerStyle from '../../assets/jss/material-kit-react/components/footerStyle.jsx';
+
+const style = {
+  margin5: {
+    margin: '5px',
+  },
+};
 
 function Footer({ ...props }) {
   const { classes, whiteFont } = props;
   const footerClasses = classNames({
     [classes.footer]: true,
-    [classes.footerWhiteFont]: whiteFont
-  });
-  const aClasses = classNames({
-    [classes.a]: true,
-    [classes.footerWhiteFont]: whiteFont
+    [classes.footerWhiteFont]: whiteFont,
   });
   return (
     <footer className={footerClasses}>
       <div className={classes.container}>
-        <div className={classes.left}>
+        <div>
+          <Button justIcon link href="mailto:dothientai2012@gmail.com" className={classes.margin5}>
+            <i className="fas fa-envelope" />
+          </Button>
+          <Button justIcon link href="https://github.com/dotai2012" className={classes.margin5}>
+            <i className='fab fa-github' />
+          </Button>
+          <Button justIcon link href="https://www.linkedin.com/in/tai-do" className={classes.margin5}>
+            <i className='fab fa-linkedin' />
+          </Button>
+        </div>
           <List className={classes.list}>
             <ListItem className={classes.inlineBlock}>
-              <a
-                href="https://www.creative-tim.com/"
+              <Link
+                to="/"
                 className={classes.block}
-                target="_blank"
               >
-                Creative Tim
-              </a>
+                Tai Do
+              </Link>
             </ListItem>
             <ListItem className={classes.inlineBlock}>
-              <a
-                href="https://www.creative-tim.com/presentation"
+              <Link
+                to="/about"
                 className={classes.block}
-                target="_blank"
               >
-                About us
-              </a>
+                About
+              </Link>
             </ListItem>
             <ListItem className={classes.inlineBlock}>
-              <a
-                href="http://blog.creative-tim.com/"
+              <Link
+                to="/contact"
                 className={classes.block}
-                target="_blank"
               >
-                Blog
-              </a>
-            </ListItem>
-            <ListItem className={classes.inlineBlock}>
-              <a
-                href="https://www.creative-tim.com/license"
-                className={classes.block}
-                target="_blank"
-              >
-                Licenses
-              </a>
+                Contact
+              </Link>
             </ListItem>
           </List>
-        </div>
-        <div className={classes.right}>
-          &copy; {1900 + new Date().getYear()} , made with{" "}
-          <Favorite className={classes.icon} /> by{" "}
-          <a
-            href="https://www.creative-tim.com"
-            className={aClasses}
-            target="_blank"
-          >
-            Creative Tim
-          </a>{" "}
-          for a better web.
+        <div>
+          &copy; {1900 + new Date().getYear()} , made with React and Material UI
         </div>
       </div>
     </footer>
@@ -83,7 +72,7 @@ function Footer({ ...props }) {
 
 Footer.propTypes = {
   classes: PropTypes.object.isRequired,
-  whiteFont: PropTypes.bool
+  whiteFont: PropTypes.bool,
 };
 
-export default withStyles(footerStyle)(Footer);
+export default withStyles({ ...footerStyle, ...style })(Footer);

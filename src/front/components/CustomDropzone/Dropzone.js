@@ -1,6 +1,15 @@
 import React, { Component } from 'react';
 import Dropzone from 'react-dropzone';
 
+const container = {
+  border: '3px dashed rgb(116, 116, 116)',
+  padding: '2.5rem',
+  textAlign: 'center',
+  textTransform: 'capitalize',
+  fontFamily: 'Roboto, sans-serif',
+  cursor: 'pointer',
+};
+
 const thumbsContainer = {
   display: 'flex',
   flexDirection: 'row',
@@ -76,7 +85,7 @@ class DropzoneWithPreview extends Component {
           onDrop={this.onDrop}
         >
           {({ getRootProps, getInputProps }) => (
-            <div {...getRootProps()}>
+            <div {...getRootProps()} style={container} >
               <input {...getInputProps()} />
               <p>Drop files here</p>
             </div>

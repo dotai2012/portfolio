@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import classNames from 'classnames';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
@@ -21,13 +20,18 @@ const mapStateToProps = ({ projects }) => ({
 @withStyles(landingPageStyle)
 @connect(mapStateToProps, { fetchProjects })
 class Home extends Component {
+
+  componentDidMount() {
+    this.props.fetchProjects();
+  }
+
   renderProject = () => this.props.projects.map(({
-    title, thumbnail, introduction, source, slug,
+    title, thumbnail, introduction, live, source, slug,
   }, index) => (
       <GridItem xs={12} sm={12} md={6} key={index}>
-        <ProjectCard title={title} image={thumbnail} source={source} more={slug} >
+        <ProjectCard title={title} image={`img/${thumbnail}`} live={live} source={source} more={`project/${slug}`} >
                 {introduction}
-          </ProjectCard>
+        </ProjectCard>
       </GridItem>
   ))
 
@@ -56,13 +60,13 @@ class Home extends Component {
             </GridContainer>
           </div>
         </Parallax>
-        <div className={classNames(classes.main, classes.mainRaised)}>
+        {/* <div className={classNames(classes.main, classes.mainRaised)}> */}
           <div className={classes.container}>
-          <GridContainer justify="center">
-              {this.renderProject()}
-          </GridContainer>
+            <GridContainer justify="center">
+                {this.renderProject()}
+            </GridContainer>
           </div>
-        </div>
+        {/* </div> */}
 
     </React.Fragment>
     );

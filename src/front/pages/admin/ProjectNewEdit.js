@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
 import withStyles from '@material-ui/core/styles/withStyles';
-import {InputAdornment, FormLabel, Icon } from '@material-ui/core';
+import {
+  InputAdornment, FormLabel, Icon, TextField,
+} from '@material-ui/core';
 import CKEditor from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import classNames from 'classnames';
 import { connect } from 'react-redux';
+import { WithContext as ReactTags } from 'react-tag-input';
 
+import { toast } from 'react-toastify';
 import Dropzone from '../../components/CustomDropzone/Dropzone';
 import GridContainer from '../../components/Grid/GridContainer';
 import GridItem from '../../components/Grid/GridItem';
@@ -16,29 +20,45 @@ import CardHeader from '../../components/Card/CardHeader';
 import CardFooter from '../../components/Card/CardFooter';
 import CustomInput from '../../components/CustomInput/CustomInput';
 
-import loginPageStyle from '../../assets/jss/material-kit-react/views/loginPage.jsx';
+import fixedBackgroundPageStyle from '../../assets/jss/material-kit-react/views/fixedBackgroundPage.jsx';
 
 import { postProject, fetchProject } from '../../actions';
 import UploadAdapter from '../../services/uploadAdapter';
+
+const KeyCodes = {
+  comma: 188,
+  enter: 13,
+};
+
+const delimiters = [KeyCodes.comma, KeyCodes.enter];
 
 const mapStateToProps = ({ projects }) => ({
   projects,
 });
 
-@withStyles(loginPageStyle)
+const style = {
+  label: {
+    margin: '2rem 0',
+  },
+  textarea: {
+    width: '100%',
+  },
+};
+
+@withStyles({ ...fixedBackgroundPageStyle, ...style })
 @connect(mapStateToProps, { postProject, fetchProject })
 class ProjectNewEdit extends Component {
   state = {
     title: '',
     thumbnail: [],
     live: '',
-    souce: '',
-    usedTool: '',
-    usedSkill: '',
+    source: '',
+    usedTool: [],
+    usedSkill: [],
     wireframe: [],
     sitemap: [],
     introduction: '',
-    body: '',
+    content: '',
   }
 
   currentDrop = ''
@@ -55,9 +75,32 @@ class ProjectNewEdit extends Component {
     }
   }
 
+  onGoBack = () => {
+    this.props.history.goBack();
+  }
+
   onSubmit = async () => {
-    await this.props.postProject(this.state);
-    this.props.history.push('/admin');
+    try {
+      await this.props.postProject(this.state);
+      toast.info('Hooray, a new project is created', {
+        position: 'top-center',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+      this.props.history.push('/admin');
+    } catch (e) {
+      toast.error('Something went wrong, try again later', {
+        position: 'top-center',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+    }
   }
 
   onInputChange = (e) => {
@@ -74,6 +117,44 @@ class ProjectNewEdit extends Component {
 
   onFileInputChange = (e) => {
     this.setState({ [e.target.name]: e.target.files });
+  }
+
+  handleDeleteUsedTool = (i) => {
+    const { usedTool } = this.state;
+    this.setState({
+      usedTool: usedTool.filter((tag, index) => index !== i),
+    });
+  }
+
+  handleAdditionUsedTool = (tag) => {
+    this.setState(state => ({ usedTool: [...state.usedTool, tag] }));
+  }
+
+  handleDragUsedTool = (tag, currPos, newPos) => {
+    const usedTool = [...this.state.usedTool];
+    const newTags = usedTool.slice();
+    newTags.splice(currPos, 1);
+    newTags.splice(newPos, 0, tag);
+    this.setState({ usedTool: newTags });
+  }
+
+  handleDeleteUsedSkill = (i) => {
+    const { usedSkill } = this.state;
+    this.setState({
+      usedSkill: usedSkill.filter((tag, index) => index !== i),
+    });
+  }
+
+  handleAdditionUsedSkill = (tag) => {
+    this.setState(state => ({ usedSkill: [...state.usedSkill, tag] }));
+  }
+
+  handleDragUsedSkill = (tag, currPos, newPos) => {
+    const usedSkill = [...this.state.usedSkill];
+    const newTags = usedSkill.slice();
+    newTags.splice(currPos, 1);
+    newTags.splice(newPos, 0, tag);
+    this.setState({ usedSkill: newTags });
   }
 
   render() {
@@ -108,6 +189,7 @@ class ProjectNewEdit extends Component {
                           onChange: this.onInputChange,
                         }}
                       />
+                      <FormLabel component="legend" className={classes.label}>Thumbnail Image</FormLabel>
                       <Dropzone onDrop={this.onDrop} multiple={false} onClick={this.onDropClick('thumbnail')}>
                             {({ getRootProps, getInputProps, isDragActive }) => (
                                 <div
@@ -163,69 +245,33 @@ class ProjectNewEdit extends Component {
                           onChange: this.onInputChange,
                         }}
                       />
-                      <CustomInput
-                        labelText="Used Tools"
-                        id="usedTool"
-                        formControlProps={{
-                          fullWidth: true,
-                        }}
-                        inputProps={{
-                          type: 'text',
-                          name: 'usedTool',
-                          endAdornment: (
-                            <InputAdornment position="end">
-                              <Icon className={classes.inputIconsColor}>
-                                build
-                              </Icon>
-                            </InputAdornment>
-                          ),
-                          value: this.state.usedTool,
-                          onChange: this.onInputChange,
-                        }}
+                      <FormLabel component="legend" className={classes.label}>Used Tools</FormLabel>
+                      <ReactTags tags={this.state.usedTool}
+                      handleDelete={this.handleDeleteUsedTool}
+                      handleAddition={this.handleAdditionUsedTool}
+                      handleDrag={this.handleDragUsedTool}
+                      delimiters={delimiters} />
+
+                      <FormLabel component="legend" className={classes.label}>Used Skills</FormLabel>
+                      <ReactTags tags={this.state.usedSkill}
+                      handleDelete={this.handleDeleteUsedSkill}
+                      handleAddition={this.handleAdditionUsedSkill}
+                      handleDrag={this.handleDragUsedSkill}
+                      delimiters={delimiters} />
+
+                      <FormLabel component="legend" className={classes.label}>Introduction</FormLabel>
+                      <TextField
+                        className={classes.textarea}
+                        name="introduction"
+                        placeholder="Describe briefly about the project"
+                        multiline={true}
+                        rows={4}
+                        rowsMax={6}
+                        variant="outlined"
+                        value={this.state.introduction}
+                        onChange={this.onInputChange}
                       />
-                      <CustomInput
-                        labelText="Used Skills"
-                        id="usedSkill"
-                        formControlProps={{
-                          fullWidth: true,
-                        }}
-                        inputProps={{
-                          type: 'text',
-                          name: 'usedSkill',
-                          endAdornment: (
-                            <InputAdornment position="end">
-                              <Icon className={classes.inputIconsColor}>
-                              pan_tool
-                              </Icon>
-                            </InputAdornment>
-                          ),
-                          value: this.state.usedSkill,
-                          onChange: this.onInputChange,
-                        }}
-                      />
-                      <CKEditor
-                          editor={ ClassicEditor }
-                          name="introduction"
-                          data={this.state.introduction}
-                          onInit={ (editor) => {
-                            editor.ui.view.editable.editableElement.style.height = '200px';
-                            editor.plugins.get('FileRepository').createUploadAdapter = function (loader) {
-                              return new UploadAdapter(loader);
-                            };
-                          } }
-                          onChange={ (event, editor) => {
-                            const data = editor.getData();
-                            this.setState({ introduction: data });
-                            console.log({ event, editor, data });
-                          } }
-                          onBlur={ (editor) => {
-                            console.log('Blur.', editor);
-                          } }
-                          onFocus={ (editor) => {
-                            console.log('Focus.', editor);
-                          } }
-                      />
-                      <FormLabel component="legend">Gender</FormLabel>
+                      <FormLabel component="legend" className={classes.label}>Wireframe Images</FormLabel>
                       <Dropzone onDrop={this.onDrop} onClick={this.onDropClick('wireframe')}>
                             {({ getRootProps, getInputProps, isDragActive }) => (
                                 <div
@@ -241,6 +287,7 @@ class ProjectNewEdit extends Component {
                                 </div>
                             )}
                       </Dropzone>
+                      <FormLabel component="legend" className={classes.label}>Sitemap Images</FormLabel>
                       <Dropzone onDrop={this.onDrop} onClick={this.onDropClick('sitemap')}>
                             {({ getRootProps, getInputProps, isDragActive }) => (
                                 <div
@@ -256,10 +303,11 @@ class ProjectNewEdit extends Component {
                                 </div>
                             )}
                       </Dropzone>
+                      <FormLabel component="legend" className={classes.label}>Content</FormLabel>
                       <CKEditor
                           editor={ ClassicEditor }
-                          name="body"
-                          data={this.state.body}
+                          name="content"
+                          data={this.state.content}
                           onInit={ (editor) => {
                             editor.ui.view.editable.editableElement.style.height = '200px';
                             editor.plugins.get('FileRepository').createUploadAdapter = function (loader) {
@@ -268,18 +316,14 @@ class ProjectNewEdit extends Component {
                           } }
                           onChange={ (event, editor) => {
                             const data = editor.getData();
-                            this.setState({ body: data });
-                            console.log({ event, editor, data });
-                          } }
-                          onBlur={ (editor) => {
-                            console.log('Blur.', editor);
-                          } }
-                          onFocus={ (editor) => {
-                            console.log('Focus.', editor);
+                            this.setState({ content: data });
                           } }
                       />
                     </CardBody>
                     <CardFooter className={classes.cardFooter}>
+                      <Button simple color="info" size="lg" onClick={this.onGoBack}>
+                        Go Back
+                      </Button>
                       <Button simple color="info" size="lg" onClick={this.onSubmit}>
                         Post Project
                       </Button>

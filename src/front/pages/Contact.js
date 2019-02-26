@@ -16,7 +16,7 @@ import CardHeader from '../components/Card/CardHeader';
 import CardFooter from '../components/Card/CardFooter';
 import CustomInput from '../components/CustomInput/CustomInput';
 
-import loginPageStyle from '../assets/jss/material-kit-react/views/loginPage.jsx';
+import fixedBackgroundPageStyle from '../assets/jss/material-kit-react/views/fixedBackgroundPage.jsx';
 
 import { postMessage } from '../actions';
 
@@ -35,14 +35,14 @@ const styles = {
   },
 };
 
-@withStyles({ ...loginPageStyle, ...styles })
+@withStyles({ ...fixedBackgroundPageStyle, ...styles })
 @connect(mapStateToProps, { postMessage })
 class Contact extends Component {
   state = {
     title: '',
-    name: '',
+    author: '',
     email: '',
-    body: '',
+    content: '',
   }
 
   onInputChange = (e) => {
@@ -132,7 +132,7 @@ class Contact extends Component {
                         }}
                         inputProps={{
                           type: 'text',
-                          name: 'name',
+                          name: 'author',
                           endAdornment: (
                             <InputAdornment position="end">
                               <Icon className={classes.inputIconsColor}>
@@ -140,7 +140,7 @@ class Contact extends Component {
                               </Icon>
                             </InputAdornment>
                           ),
-                          value: this.state.name,
+                          value: this.state.author,
                           onChange: this.onInputChange,
                         }}
                       />
@@ -166,12 +166,13 @@ class Contact extends Component {
                       />
                       <TextField
                         className={classes.textarea}
-                        name="body"
+                        name="content"
                         placeholder="Send me a message"
                         multiline={true}
                         rows={4}
                         rowsMax={6}
                         variant="outlined"
+                        value={this.state.content}
                         onChange={this.onInputChange}
                       />
                     </CardBody>

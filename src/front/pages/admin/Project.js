@@ -66,7 +66,7 @@ class Project extends Component {
           <Table className={classes.table}>
             <TableHead>
               <TableRow>
-                <TableCell>Project Title</TableCell>
+                <TableCell>Title</TableCell>
                 <TableCell align="right">Action</TableCell>
               </TableRow>
             </TableHead>

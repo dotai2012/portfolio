@@ -13,6 +13,7 @@ const profilePageStyle = {
     },
   },
   description: {
+    padding: '5rem',
     margin: '1.071rem auto 0',
     maxWidth: '600px',
     color: '#999',

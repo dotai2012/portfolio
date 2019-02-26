@@ -1,0 +1,42 @@
+.project-title {
+  font-size: 1.5rem;
+  text-align: center;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin: 2rem 0;
+}
+
+.project-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.project-line {
+  border: 2px #6fb8e4 solid;
+  border-radius: 2px;
+  width: 100%;
+}
+
+.project-skill {
+  font-size: 1.2rem;
+  font-style: italic;
+}
+
+.project-action {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.project-carousel {
+  width: 80%;
+  margin: 1.5rem auto;
+}
+
+.project-image {
+  max-width: 100%;
+}
+
+.project-content img {
+  max-width: 100%;
+}

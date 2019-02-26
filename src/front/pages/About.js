@@ -36,14 +36,14 @@ class About extends Component {
                     <div className={classes.name}>
                       <h3 className={classes.title}>Tai Do</h3>
                       <h6>Web Developer / Designer</h6>
-                      <Button justIcon link className={classes.margin5}>
-                        <i className='fab fa-twitter' />
+                      <Button justIcon link href="mailto:dothientai2012@gmail.com" className={classes.margin5}>
+                        <i className="fas fa-envelope" />
                       </Button>
-                      <Button justIcon link className={classes.margin5}>
-                        <i className='fab fa-instagram' />
+                      <Button justIcon link href="https://github.com/dotai2012" className={classes.margin5}>
+                        <i className='fab fa-github' />
                       </Button>
-                      <Button justIcon link className={classes.margin5}>
-                        <i className='fab fa-facebook' />
+                      <Button justIcon link href="https://www.linkedin.com/in/tai-do" className={classes.margin5}>
+                        <i className='fab fa-linkedin' />
                       </Button>
                     </div>
                   </div>

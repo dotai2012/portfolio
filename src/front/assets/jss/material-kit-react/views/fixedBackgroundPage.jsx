@@ -1,12 +1,13 @@
 import { container } from '../../material-kit-react.jsx';
 
-const signupPageStyle = {
+const fixedBackgroundPage = {
   container: {
     ...container,
     zIndex: '2',
     position: 'relative',
     paddingTop: '20vh',
     color: '#FFFFFF',
+    fontFamily: 'Roboto, sans-serif',
   },
   cardHidden: {
     opacity: '0',
@@ -91,4 +92,4 @@ const signupPageStyle = {
   },
 };
 
-export default signupPageStyle;
+export default fixedBackgroundPage;

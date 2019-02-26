@@ -19,7 +19,7 @@ const storage = multer.diskStorage({
       });
   },
   filename: (req, file, cb) => {
-    cb(null, `-${Date.now()}${file.originalname}`);
+    cb(null, `${Date.now()}${file.originalname}`);
   },
 });
 const upload = multer({ storage });
@@ -27,13 +27,13 @@ const upload = multer({ storage });
 const router = express.Router();
 
 router.route('/')
-  .get(passport.authenticate('jwt', { session: false }), listProject)
+  .get(listProject)
   .post(passport.authenticate('jwt', { session: false }), upload.any(), addProject);
 
 router.post('/uploadadapter', passport.authenticate('jwt', { session: false }), upload.any(), uploadAdapter);
 
 router.route('/:slug')
-  .get(passport.authenticate('jwt', { session: false }), viewProject)
+  .get(viewProject)
   .put(passport.authenticate('jwt', { session: false }), editProject)
   .delete(passport.authenticate('jwt', { session: false }), deleteProject);
 
