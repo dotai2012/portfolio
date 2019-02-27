@@ -97,7 +97,7 @@ class ResponsiveDrawer extends Component {
             >
               <Icon>menu</Icon>
             </IconButton>
-            <Typography variant="h6" color="inherit" noWrap>
+            <Typography component={Link} to="/" variant="h6" color="inherit" noWrap>
               Admin Dashboard
             </Typography>
           </Toolbar>

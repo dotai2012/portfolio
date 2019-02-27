@@ -59,6 +59,9 @@ class ProjectNewEdit extends Component {
     sitemap: [],
     introduction: '',
     content: '',
+    thumbnailImageDropzone: [],
+    wireframeImageDropzone: [],
+    sitemapImageDropzone: [],
   }
 
   currentDrop = ''
@@ -70,7 +73,26 @@ class ProjectNewEdit extends Component {
       const { slug } = match.params;
       await this.props.fetchProject(slug);
       if (this.props.projects.length > 0) {
-        this.setState(this.props.projects[0]);
+        Object.keys(this.props.projects[0]).map((key) => {
+          if (key === 'usedTool' || key === 'usedSkill') {
+            if (key === 'usedTool') {
+              const usedTool = this.props.projects[0][key].map(oj => JSON.parse(oj));
+              this.setState({ usedTool });
+            }
+
+            if (key === 'usedSkill') {
+              const usedSkill = this.props.projects[0][key].map(oj => JSON.parse(oj));
+              this.setState({ usedSkill });
+            }
+          } else {
+            this.setState({ [key]: this.props.projects[0][key] });
+          }
+        });
+        const thumbnailImageDropzone = [`img/${this.props.projects[0].thumbnail}`];
+        const wireframeImageDropzone = this.props.projects[0].wireframe.map(image => `img/${image}`);
+        const sitemapImageDropzone = this.props.projects[0].sitemap.map(image => `img/${image}`);
+
+        this.setState({ thumbnailImageDropzone, wireframeImageDropzone, sitemapImageDropzone });
       }
     }
   }
@@ -190,7 +212,7 @@ class ProjectNewEdit extends Component {
                         }}
                       />
                       <FormLabel component="legend" className={classes.label}>Thumbnail Image</FormLabel>
-                      <Dropzone onDrop={this.onDrop} multiple={false} onClick={this.onDropClick('thumbnail')}>
+                      <Dropzone onDrop={this.onDrop} multiple={false} onClick={this.onDropClick('thumbnail')} thumbs={this.state.thumbnailImageDropzone}>
                             {({ getRootProps, getInputProps, isDragActive }) => (
                                 <div
                                   {...getRootProps()}
@@ -272,7 +294,7 @@ class ProjectNewEdit extends Component {
                         onChange={this.onInputChange}
                       />
                       <FormLabel component="legend" className={classes.label}>Wireframe Images</FormLabel>
-                      <Dropzone onDrop={this.onDrop} onClick={this.onDropClick('wireframe')}>
+                      <Dropzone onDrop={this.onDrop} onClick={this.onDropClick('wireframe')} thumbs={this.state.wireframeImageDropzone}>
                             {({ getRootProps, getInputProps, isDragActive }) => (
                                 <div
                                   {...getRootProps()}
@@ -288,7 +310,7 @@ class ProjectNewEdit extends Component {
                             )}
                       </Dropzone>
                       <FormLabel component="legend" className={classes.label}>Sitemap Images</FormLabel>
-                      <Dropzone onDrop={this.onDrop} onClick={this.onDropClick('sitemap')}>
+                      <Dropzone onDrop={this.onDrop} onClick={this.onDropClick('sitemap')} thumbs={this.state.sitemapImageDropzone}>
                             {({ getRootProps, getInputProps, isDragActive }) => (
                                 <div
                                   {...getRootProps()}

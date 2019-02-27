@@ -7,7 +7,7 @@ export default function (state = [], action) {
     case CURRENT_MESSAGE:
       return [action.payload];
     case DELETE_MESSAGE:
-      return [...state.filter(o => o.slug === action.payload.slug)];
+      return [...state.filter(o => o.slug !== action.payload.slug)];
     default:
       return state;
   }

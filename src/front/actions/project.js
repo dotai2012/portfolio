@@ -28,9 +28,13 @@ const postProject = data => async (dispatch, getState, api) => {
   const formData = new FormData();
 
   Object.keys(data).map((key) => {
-    if (Array.isArray(data[key]) && key !== 'usedTool' !== 'usedSkill') {
+    if (Array.isArray(data[key])) {
       data[key].map((file) => {
-        formData.append(key, file);
+        if (_.isObject(file) && _.has(file, 'text')) {
+          formData.append(key, JSON.stringify(file));
+        } else {
+          formData.append(key, file);
+        }
       });
     } else {
       formData.append(key, data[key]);
@@ -43,8 +47,8 @@ const postProject = data => async (dispatch, getState, api) => {
 const deleteProject = slug => async (dispatch, getState, api) => {
   await api.delete(`/project/${slug}`, { headers: { Authorization: token } });
 
-  const { projects } = getState();
-  const removeItem = _.remove(projects, o => o.slug === slug);
+  const { projects } = _.cloneDeep(getState());
+  const [removeItem] = _.remove(projects, o => o.slug === slug);
   dispatch({
     type: DELETE_PROJECT,
     payload: removeItem,

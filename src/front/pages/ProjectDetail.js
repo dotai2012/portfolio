@@ -45,6 +45,18 @@ class ProjectDetail extends Component {
     }
   }
 
+  renderUsedTool = () => this.state.usedTool.map((tool, index) => (
+        <span className="ReactTags__tag" key={index}>
+          {tool}
+        </span>
+  ))
+
+  renderUsedSkill = () => this.state.usedSkill.map((skill, index) => (
+    <span className="ReactTags__tag" key={index}>
+      {skill}
+    </span>
+  ))
+
   renderWireframe = () => this.state.wireframe.map((image, index) => (
       <div key={index}>
         <img
@@ -69,8 +81,6 @@ class ProjectDetail extends Component {
       thumbnail,
       live,
       source,
-      usedTool,
-      usedSkill,
       introduction,
       content,
     } = this.state;
@@ -107,8 +117,8 @@ class ProjectDetail extends Component {
             </GridItem>
             <GridItem xs={12} sm={12} md={6} className="project-info">
               <div className="project-skill">
-                <p>Used Tools: {usedTool}</p>
-                <p>Used Skill: {usedSkill}</p>
+                <p className="ReactTags__tag__wrapper">Used Tools: {this.renderUsedTool()}</p>
+                <p className="ReactTags__tag__wrapper">Used Skills: {this.renderUsedSkill()}</p>
               </div>
               <hr className="project-line" />
               <div className="project-action">

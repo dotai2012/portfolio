@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Dropzone from 'react-dropzone';
+import _ from 'lodash';
 
 const container = {
   border: '3px dashed rgb(116, 116, 116)',
@@ -59,23 +60,37 @@ class DropzoneWithPreview extends Component {
   }
 
   componentWillUnmount() {
-    // Make sure to revoke the data uris to avoid memory leaks
     this.state.files.forEach(file => URL.revokeObjectURL(file.preview));
   }
 
   render() {
     const { files } = this.state;
 
-    const thumbs = files.map(file => (
-      <div style={thumb} key={file.name}>
-        <div style={thumbInner}>
-          <img
-            src={file.preview}
-            style={img}
-          />
+    const thumbs = () => {
+      console.log(_.has(this.props, 'thumbs'), this.props.thumbs.length > 0);
+      if (_.has(this.props, 'thumbs') && this.props.thumbs.length > 0) {
+        return this.props.thumbs.map((file, index) => (
+          <div style={thumb} key={index}>
+            <div style={thumbInner}>
+              <img
+                src={file}
+                style={img}
+              />
+            </div>
+          </div>
+        ));
+      }
+      return files.map(file => (
+        <div style={thumb} key={file.name}>
+          <div style={thumbInner}>
+            <img
+              src={file.preview}
+              style={img}
+            />
+          </div>
         </div>
-      </div>
-    ));
+      ));
+    };
 
     return (
       <section>
@@ -92,7 +107,7 @@ class DropzoneWithPreview extends Component {
           )}
         </Dropzone>
         <aside style={thumbsContainer}>
-          {thumbs}
+          {thumbs()}
         </aside>
       </section>
     );

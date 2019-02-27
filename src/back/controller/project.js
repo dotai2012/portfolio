@@ -34,17 +34,14 @@ const addProject = (req, res) => {
   const wireframe = wireframeFilter.map(({ filename }) => filename);
   const sitemap = sitemapFilter.map(({ filename }) => filename);
 
-  const usedToolCompact = usedTool.map(({ text }) => text);
-  const usedSkillCompact = usedSkill.map(({ text }) => text);
-
   const profile = jwtDecode(req.get('Authorization'));
   const newProject = new Project({
     title,
     thumbnail,
     live,
     source,
-    usedTool: usedToolCompact,
-    usedSkill: usedSkillCompact,
+    usedTool,
+    usedSkill,
     wireframe,
     sitemap,
     introduction,
@@ -78,10 +75,28 @@ const editProject = (req, res) => {
     slug,
   } = req.params;
   const {
-    title, tags, description, _user,
+    title, live, source, usedTool, usedSkill, introduction, content,
   } = req.body;
+
+  const thumbnailFilter = _.filter(req.files, o => o.fieldname === 'thumbnail');
+  const wireframeFilter = _.filter(req.files, o => o.fieldname === 'wireframe');
+  const sitemapFilter = _.filter(req.files, o => o.fieldname === 'sitemap');
+
+  const thumbnail = thumbnailFilter.map(({ filename }) => filename);
+  const wireframe = wireframeFilter.map(({ filename }) => filename);
+  const sitemap = sitemapFilter.map(({ filename }) => filename);
+
   const query = Project.findOneAndUpdate({ slug }, {
-    title, tags, description, _user,
+    title,
+    thumbnail,
+    live,
+    source,
+    usedTool,
+    usedSkill,
+    wireframe,
+    sitemap,
+    introduction,
+    content,
   });
   query.exec((err, result) => {
     returnQuery(err, result, res);

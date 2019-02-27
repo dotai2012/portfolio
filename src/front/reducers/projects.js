@@ -7,7 +7,7 @@ export default function (state = [], action) {
     case CURRENT_PROJECT:
       return [action.payload];
     case DELETE_PROJECT:
-      return [...state.filter(o => o._id === action.payload._id)];
+      return [...state.filter(o => o.slug !== action.payload.slug)];
     default:
       return state;
   }

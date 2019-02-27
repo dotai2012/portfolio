@@ -29,8 +29,8 @@ const postMessage = data => (dispatch, getState, api) => api.post('/message', da
 const deleteMessage = slug => async (dispatch, getState, api) => {
   await api.delete(`/message/${slug}`, { headers: { Authorization: token } });
 
-  const { messages } = getState();
-  const removeItem = _.remove(messages, o => o.slug === slug);
+  const { messages } = _.cloneDeep(getState());
+  const [removeItem] = _.remove(messages, o => o.slug === slug);
   dispatch({
     type: DELETE_MESSAGE,
     payload: removeItem,

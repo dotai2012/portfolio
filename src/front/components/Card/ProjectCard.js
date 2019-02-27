@@ -30,23 +30,25 @@ class ProjectCard extends React.Component {
       classes, title, image, children, live, source, more,
     } = this.props;
     return (
-      <Card>
-        <img
-          style={inlineStyle.img}
-          className={classes.imgCardTop}
-          src={image}
-          alt="Card-img-cap"
-        />
-        <CardBody>
-          <h4 className={classes.cardTitle}>{title}</h4>
-          <p>{children}</p>
-          <div className={classes.linkContainer}>
-            <a href={live} target="_blank" rel="noopener noreferrer">Live</a>
-            <a href={source} target="_blank" rel="noopener noreferrer">Source Code</a>
-            <Link to={more}>View More</Link>
-          </div>
-        </CardBody>
-      </Card>
+        <Card>
+          <Link to={more}>
+            <img
+              style={inlineStyle.img}
+              className={classes.imgCardTop}
+              src={image}
+              alt="Card-img-cap"
+            />
+          </Link>
+          <CardBody>
+            <h4 className={classes.cardTitle}>{title}</h4>
+            <p>{children}</p>
+            <div className={classes.linkContainer}>
+              <a href={live} target="_blank" rel="noopener noreferrer">Live</a>
+              <a href={source} target="_blank" rel="noopener noreferrer">Source Code</a>
+              <Link to={more}>View More</Link>
+            </div>
+          </CardBody>
+        </Card>
     );
   }
 }
