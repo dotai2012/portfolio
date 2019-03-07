@@ -67,7 +67,6 @@ class DropzoneWithPreview extends Component {
     const { files } = this.state;
 
     const thumbs = () => {
-      console.log(_.has(this.props, 'thumbs'), this.props.thumbs.length > 0);
       if (_.has(this.props, 'thumbs') && this.props.thumbs.length > 0) {
         return this.props.thumbs.map((file, index) => (
           <div style={thumb} key={index}>
