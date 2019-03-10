@@ -45,17 +45,23 @@ class ProjectDetail extends Component {
     }
   }
 
-  renderUsedTool = () => this.state.usedTool.map((tool, index) => (
-        <span className="ReactTags__tag" key={index}>
-          {tool}
-        </span>
-  ))
+  renderUsedTool = () => this.state.usedTool.map((tool, index) => {
+    const { text } = JSON.parse(tool);
+    return (
+      <span className="ReactTags__tag" key={index}>
+        {text}
+      </span>
+    );
+  })
 
-  renderUsedSkill = () => this.state.usedSkill.map((skill, index) => (
-    <span className="ReactTags__tag" key={index}>
-      {skill}
-    </span>
-  ))
+  renderUsedSkill = () => this.state.usedSkill.map((skill, index) =>  {
+    const { text } = JSON.parse(skill);
+    return (
+      <span className="ReactTags__tag" key={index}>
+        {text}
+      </span>
+    );
+  })
 
   renderWireframe = () => this.state.wireframe.map((image, index) => (
       <div key={index}>

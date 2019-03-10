@@ -20,7 +20,6 @@ const mapStateToProps = ({ projects }) => ({
 @withStyles(landingPageStyle)
 @connect(mapStateToProps, { fetchProjects })
 class Home extends Component {
-
   componentDidMount() {
     this.props.fetchProjects();
   }
