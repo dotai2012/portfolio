@@ -29,6 +29,8 @@
   background-color: #0cb4c9;
   border-radius: 3px;
   color: white;
+  display: inline-block;
+  margin: 0.5rem 0; 
 
   &:not(:last-child) {
     margin-right: 0.5rem;
