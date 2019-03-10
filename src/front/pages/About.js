@@ -52,10 +52,6 @@ class About extends Component {
               <div className={classes.description}>
                 <p>Graduating from BCIT and a web developer/designer, I always want to design the best websites for users. I'm always passionate and intrigued by technology.</p>
                 <p>Turning ideas into reality fascinates me. When I was younger, I thought "How did they do that?" and now I'm a part of this industry. Every day is an exotic challenge for me</p>
-                <iframe height="265" style="width: 100%;" scrolling="no" title="React at CodePen" src="//codepen.io/lbain/embed/ENpzBZ/?height=265&theme-id=0&default-tab=js,result" frameBorder="no">
-                  See the Pen <a href='https://codepen.io/lbain/pen/ENpzBZ/'>React at CodePen</a> by Lucy Bain
-                  (<a href='https://codepen.io/lbain'>@lbain</a>) on <a href='https://codepen.io'>CodePen</a>.
-                </iframe>
               </div>
             </div>
           </div>

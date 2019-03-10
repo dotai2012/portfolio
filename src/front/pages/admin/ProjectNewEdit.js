@@ -331,7 +331,6 @@ class ProjectNewEdit extends Component {
                           name="content"
                           data={this.state.content}
                           onInit={ (editor) => {
-                            editor.ui.view.editable.editableElement.style.height = '200px';
                             editor.plugins.get('FileRepository').createUploadAdapter = function (loader) {
                               return new UploadAdapter(loader);
                             };
