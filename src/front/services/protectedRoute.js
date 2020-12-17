@@ -8,20 +8,21 @@ const ProtectedRoute = ({ component: Component, ...rest }) => {
   if (token && jwtDecode(token).exp < Date.now() / 1000) {
     localStorage.clear();
   }
-  return (<Route
-    {...rest}
-    render={props => (getUser() && getUser().token ? (
+  return (
+    <Route
+      {...rest}
+      render={(props) => (getUser() && getUser().token ? (
         <Component {...props} />
-    ) : (
+      ) : (
         <Redirect
           to={{
             pathname: '/login',
             state: { from: props.location },
           }}
         />
-    ))
-    }
-  />);
+      ))}
+    />
+  );
 };
 
 export default ProtectedRoute;
